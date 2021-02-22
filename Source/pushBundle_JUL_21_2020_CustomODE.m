@@ -92,7 +92,7 @@ function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
              [tr,yr] = Dopri54OdeEM(@(t,y) odeEmRayFun(t,y,omega_ps, ...
                                                 rayGd),tSpan,ray0);
            case 'EPW'
-             [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
+             [tr,yr] = Dopri54OdeLw(@(t,y) odeLwRayFun(t,y,omega_ps, ...
                                                 rayGd),tSpan,ray0);           
            otherwise
              exit('invalid waveType')
@@ -343,7 +343,7 @@ end
  end
 
  
- function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
+function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
     
     % DOPRI54 solves system of ODEs with the Dormand and Prince 54 code.
     % INPUT
@@ -432,3 +432,91 @@ end
 %     end
 end
 
+function [tOut,yOut] = Dopri54OdeLw(tList,y0,rpar)
+    
+    % DOPRI54 solves system of ODEs with the Dormand and Prince 54 code.
+    % INPUT
+    % funcion - integrated to this file. Check at the end for the equation used
+    % problem description.
+    % Call: yprime = fun(t,y,rpar) where funcion = 'fun'.
+    % t - Time (scalar).
+    % y - Solution column-vector.
+    % rpar - parameters possibly needed in buinding yprime
+    % yprime - Returned derivative column-vector; yprime(i)
+    % = dy(i)/dt.
+    % tList - series of time points - JS NOV 2020
+    % y0 - Initial value column-vector.
+    % tolerance - tolerance for the local error
+    % OUTPUT
+    % y - computed solution at y=t1.
+    % stad - vector containing number of steps, rejections and
+    % function calls
+    % Sample code obtained from https://www.mathstools.com/section/main/dormand_prince_method#.X62QhmhKiUm
+
+    %t=tList[1];
+    y=y0;
+    tOut = tList';
+    yOut = zeros([length(tOut),length(y0)]); %turn this into gpuArray
+    yOut(1,:) = y0;
+    step=1;
+    t=tList(step);
+    nrej=0;
+    fcall=1;
+    a4=[44/45 -56/15 32/9]'; %gpuArray([44/45 -56/15 32/9]');
+    a5=[19372/6561 -25360/2187 64448/6561 -212/729]';%gpuArray([19372/6561 -25360/2187 64448/6561 -212/729]');
+    a6=[9017/3168 -355/33 46732/5247 49/176 -5103/18656]';%gpuArray([9017/3168 -355/33 46732/5247 49/176 -5103/18656]');
+    a7=[35/384 0 500/1113 125/192 -2187/6784 11/84]';%gpuArray([35/384 0 500/1113 125/192 -2187/6784 11/84]');
+    e=[71/57600 -1/40 -71/16695 71/1920 -17253/339200 22/525]';%gpuArray([71/57600 -1/40 -71/16695 71/1920 -17253/339200 22/525]');
+    k1=odeLwRayFun(t,y,rpar);
+
+    while step < length(tList)
+        %if t+h > t1; h=t1-t; end
+        t=tList(step);
+        h=tList(step+1)-tList(step);
+        k2=odeLwRayFun(t+h/5,y+h*k1/5,rpar);
+        k3=odeLwRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,rpar);
+        k4=odeLwRayFun(t+4*h/5,y+h*(a4(1)*k1+a4(2)*k2+a4(3)*k3),rpar);
+        k5=odeLwRayFun(t+8*h/9,y+h*(a5(1)*k1+a5(2)*k2+a5(3)*k3+a5(4)*k4),rpar);
+        k6=odeLwRayFun(t+h,y+h*(a6(1)*k1+a6(2)*k2+a6(3)*k3+a6(4)*k4+a6(5)*k5),rpar);
+        yt=y+h*(a7(1)*k1+a7(3)*k3+a7(4)*k4+a7(5)*k5+a7(6)*k6);
+        k2=odeLwRayFun(t+h,yt,rpar);
+        step = step + 1;
+        yOut(step,:) = yt;
+        iter_needed = false;
+        %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
+        %4 components each inside
+        est_dz = norm(h*(e(1)*k1(1)+e(2)*k2(1)+e(3)*k3(1)+e(4)*k4(1)+e(5)*k5(1)+e(6)*k6(1)),inf);
+        est_dr = norm(h*(e(1)*k1(2)+e(2)*k2(2)+e(3)*k3(2)+e(4)*k4(2)+e(5)*k5(2)+e(6)*k6(2)),inf);
+        est_dkz = norm(h*(e(1)*k1(3)+e(2)*k2(3)+e(3)*k3(3)+e(4)*k4(3)+e(5)*k5(3)+e(6)*k6(3)),inf);
+        est_dkr = norm(h*(e(1)*k1(4)+e(2)*k2(4)+e(3)*k3(4)+e(4)*k4(4)+e(5)*k5(4)+e(6)*k6(4)),inf);
+        fcall=fcall+6;
+        % [t h est]
+        for est = [est_dz, est_dr, est_dkz, est_dkr]
+            if  est > tolerance
+                iter_needed = true;
+            end
+        end
+        
+        if iter_needed == false
+            t=t+h;
+            k1=k2;
+            step=step+1;
+            y=yt;
+        else
+            nrej=nrej+1;
+        end
+        
+        % Not sure which h to use. Choosing the smallest h
+        h_dz = .9*min((tolerance/(est_dz+eps))^(1/5),10)*h;
+        h_dr = .9*min((tolerance/(est_dr+eps))^(1/5),10)*h;
+        h_dkz = .9*min((tolerance/(est_dkz+eps))^(1/5),10)*h;
+        h_dkr = .9*min((tolerance/(est_dkr+eps))^(1/5),10)*h;
+        h = min([h_dz, h_dr, h_dkz, h_dkr]);
+    end
+
+% Ignore the following for now - JS NOV 2020
+% This is record for how many steps are used. Can be ignored. - JW FEB 2021
+%     if nargout > 1
+%         stad=[step nrej fcall];
+%     end
+end
