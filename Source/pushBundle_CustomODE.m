@@ -1,9 +1,4 @@
-%Used in Dopri54 Functions
-a4=[44/45 -56/15 32/9]'; %gpuArray([44/45 -56/15 32/9]');
-a5=[19372/6561 -25360/2187 64448/6561 -212/729]';%gpuArray([19372/6561 -25360/2187 64448/6561 -212/729]');
-a6=[9017/3168 -355/33 46732/5247 49/176 -5103/18656]';%gpuArray([9017/3168 -355/33 46732/5247 49/176 -5103/18656]');
-a7=[35/384 0 500/1113 125/192 -2187/6784 11/84]';%gpuArray([35/384 0 500/1113 125/192 -2187/6784 11/84]');
-e=[71/57600 -1/40 -71/16695 71/1920 -17253/339200 22/525]';%gpuArray([71/57600 -1/40 -71/16695 71/1920 -17253/339200 22/525]');
+
 
 function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
 % 
@@ -436,20 +431,20 @@ function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
         h=tList(step+1)-tList(step);
         k2=odeEmRayFun(t+h/5,y+h*k1/5,rpar);
         k3=odeEmRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,rpar);
-        k4=odeEmRayFun(t+4*h/5,y+h*(a4(1)*k1+a4(2)*k2+a4(3)*k3),rpar);
-        k5=odeEmRayFun(t+8*h/9,y+h*(a5(1)*k1+a5(2)*k2+a5(3)*k3+a5(4)*k4),rpar);
-        k6=odeEmRayFun(t+h,y+h*(a6(1)*k1+a6(2)*k2+a6(3)*k3+a6(4)*k4+a6(5)*k5),rpar);
-        yt=y+h*(a7(1)*k1+a7(3)*k3+a7(4)*k4+a7(5)*k5+a7(6)*k6);
+        k4=odeEmRayFun(t+4*h/5,y+h*(cnst.a4(1)*k1+cnst.a4(2)*k2+cnst.a4(3)*k3),rpar);
+        k5=odeEmRayFun(t+8*h/9,y+h*(cnst.a5(1)*k1+cnst.a5(2)*k2+cnst.a5(3)*k3+cnst.a5(4)*k4),rpar);
+        k6=odeEmRayFun(t+h,y+h*(cnst.a6(1)*k1+cnst.a6(2)*k2+cnst.a6(3)*k3+cnst.a6(4)*k4+cnst.a6(5)*k5),rpar);
+        yt=y+h*(cnst.a7(1)*k1+cnst.a7(3)*k3+cnst.a7(4)*k4+cnst.a7(5)*k5+cnst.a7(6)*k6);
         k2=odeEmRayFun(t+h,yt,rpar);
         step = step + 1;
         yOut(step,:) = yt;
         iter_needed = false;
         %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
         %4 components each inside
-        est_dz = norm(h*(e(1)*k1(1)+e(2)*k2(1)+e(3)*k3(1)+e(4)*k4(1)+e(5)*k5(1)+e(6)*k6(1)),inf);
-        est_dr = norm(h*(e(1)*k1(2)+e(2)*k2(2)+e(3)*k3(2)+e(4)*k4(2)+e(5)*k5(2)+e(6)*k6(2)),inf);
-        est_dkz = norm(h*(e(1)*k1(3)+e(2)*k2(3)+e(3)*k3(3)+e(4)*k4(3)+e(5)*k5(3)+e(6)*k6(3)),inf);
-        est_dkr = norm(h*(e(1)*k1(4)+e(2)*k2(4)+e(3)*k3(4)+e(4)*k4(4)+e(5)*k5(4)+e(6)*k6(4)),inf);
+        est_dz = norm(h*(cnst.e(1)*k1(1)+cnst.e(2)*k2(1)+cnst.e(3)*k3(1)+cnst.e(4)*k4(1)+cnst.e(5)*k5(1)+cnst.e(6)*k6(1)),inf);
+        est_dr = norm(h*(cnst.e(1)*k1(2)+cnst.e(2)*k2(2)+cnst.e(3)*k3(2)+cnst.e(4)*k4(2)+cnst.e(5)*k5(2)+cnst.e(6)*k6(2)),inf);
+        est_dkz = norm(h*(cnst.e(1)*k1(3)+cnst.e(2)*k2(3)+cnst.e(3)*k3(3)+cnst.e(4)*k4(3)+cnst.e(5)*k5(3)+cnst.e(6)*k6(3)),inf);
+        est_dkr = norm(h*(cnst.e(1)*k1(4)+cnst.e(2)*k2(4)+cnst.e(3)*k3(4)+cnst.e(4)*k4(4)+cnst.e(5)*k5(4)+cnst.e(6)*k6(4)),inf);
         %fcall=fcall+6; Used for counting function calls
         % [t h est]
         for est = [est_dz, est_dr, est_dkz, est_dkr]
@@ -520,21 +515,21 @@ function [tOut,yOut] = Dopri54OdeLw(tList,y0,rpar)
         h=tList(step+1)-tList(step);
         k2=odeLwRayFun(t+h/5,y+h*k1/5,rpar);
         k3=odeLwRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,rpar);
-        k4=odeLwRayFun(t+4*h/5,y+h*(a4(1)*k1+a4(2)*k2+a4(3)*k3),rpar);
-        k5=odeLwRayFun(t+8*h/9,y+h*(a5(1)*k1+a5(2)*k2+a5(3)*k3+a5(4)*k4),rpar);
-        k6=odeLwRayFun(t+h,y+h*(a6(1)*k1+a6(2)*k2+a6(3)*k3+a6(4)*k4+a6(5)*k5),rpar);
-        yt=y+h*(a7(1)*k1+a7(3)*k3+a7(4)*k4+a7(5)*k5+a7(6)*k6);
+        k4=odeLwRayFun(t+4*h/5,y+h*(cnst.a4(1)*k1+cnst.a4(2)*k2+cnst.a4(3)*k3),rpar);
+        k5=odeLwRayFun(t+8*h/9,y+h*(cnst.a5(1)*k1+cnst.a5(2)*k2+cnst.a5(3)*k3+cnst.a5(4)*k4),rpar);
+        k6=odeLwRayFun(t+h,y+h*(cnst.a6(1)*k1+cnst.a6(2)*k2+cnst.a6(3)*k3+cnst.a6(4)*k4+cnst.a6(5)*k5),rpar);
+        yt=y+h*(cnst.a7(1)*k1+cnst.a7(3)*k3+cnst.a7(4)*k4+cnst.a7(5)*k5+cnst.a7(6)*k6);
         k2=odeLwRayFun(t+h,yt,rpar);
         step = step + 1;
         yOut(step,:) = yt;
         iter_needed = false;
         %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
         %4 components each inside
-        est_dz = norm(h*(e(1)*k1(1)+e(2)*k2(1)+e(3)*k3(1)+e(4)*k4(1)+e(5)*k5(1)+e(6)*k6(1)),inf);
-        est_dr = norm(h*(e(1)*k1(2)+e(2)*k2(2)+e(3)*k3(2)+e(4)*k4(2)+e(5)*k5(2)+e(6)*k6(2)),inf);
-        est_dkz = norm(h*(e(1)*k1(3)+e(2)*k2(3)+e(3)*k3(3)+e(4)*k4(3)+e(5)*k5(3)+e(6)*k6(3)),inf);
-        est_dkr = norm(h*(e(1)*k1(4)+e(2)*k2(4)+e(3)*k3(4)+e(4)*k4(4)+e(5)*k5(4)+e(6)*k6(4)),inf);
-        fcall=fcall+6;
+        est_dz = norm(h*(cnst.e(1)*k1(1)+cnst.e(2)*k2(1)+cnst.e(3)*k3(1)+cnst.e(4)*k4(1)+cnst.e(5)*k5(1)+cnst.e(6)*k6(1)),inf);
+        est_dr = norm(h*(cnst.e(1)*k1(2)+cnst.e(2)*k2(2)+cnst.e(3)*k3(2)+cnst.e(4)*k4(2)+cnst.e(5)*k5(2)+cnst.e(6)*k6(2)),inf);
+        est_dkz = norm(h*(cnst.e(1)*k1(3)+cnst.e(2)*k2(3)+cnst.e(3)*k3(3)+cnst.e(4)*k4(3)+cnst.e(5)*k5(3)+cnst.e(6)*k6(3)),inf);
+        est_dkr = norm(h*(cnst.e(1)*k1(4)+cnst.e(2)*k2(4)+cnst.e(3)*k3(4)+cnst.e(4)*k4(4)+cnst.e(5)*k5(4)+cnst.e(6)*k6(4)),inf);
+        %fcall=fcall+6;
         % [t h est]
         for est = [est_dz, est_dr, est_dkz, est_dkr]
             if  est > tolerance
