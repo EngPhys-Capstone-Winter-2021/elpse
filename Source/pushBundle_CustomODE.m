@@ -1,5 +1,3 @@
-
-
 function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
 % 
 % First cut at developing a ray integrator for EM and other waves:
@@ -11,6 +9,7 @@ function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
 %  where we currently have problems with "margin" (JFM 21 July, 2020).
 %
  
+
  global cnst
  
  if ~exist('cnst','var')
@@ -62,7 +61,11 @@ function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
      omega_ps = 1.e-12*rayBundle.frequency(rayIdx);
      dirn = sign(omega_ps);             % see which direction we're going
      tStop = tPrev+tStep;
-     tSpan = [tPrev, tStop];     
+    
+     % changed the input tSpan as below. 40 inbetween points
+     % March 8th, 2021, JW
+     %
+     tSpan = tPrev:tStep/40:tStop;      % The 40 points can be changed
      ray0 = [x0, k0]';                  % initial condition (column vector)
                                         % in phase space for ode integrator
 
@@ -93,14 +96,13 @@ function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
      % Provided we have a good integration time we can integrate
      % over the given time span and see what it looks like
      %
+     
      if tStop > tPrev
          switch waveType
            case 'EM'
-             [tr,yr] = Dopri54OdeEM(@(t,y) odeEmRayFun(t,y,omega_ps, ...
-                                                rayGd),tSpan,ray0);
+             [tr,yr] = Dopri54OdeEM(tSpan,ray0,omega_ps,rayGd, 1e-4); %Last entry 1e-6 is tolerance
            case 'EPW'
-             [tr,yr] = Dopri54OdeLw(@(t,y) odeLwRayFun(t,y,omega_ps, ...
-                                                rayGd),tSpan,ray0);           
+             [tr,yr] = Dopri54OdeLw(tSpan,ray0,omega_ps,rayGd, 1e-4); %Last entry 1e-6 is tolerance          
            otherwise
              exit('invalid waveType')
          end
@@ -393,7 +395,7 @@ end
     
  end
 
-function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
+function [tOut,yOut] = Dopri54OdeEM(tList,y0,omega_ps,rayGd,tolerance)
     
     % DOPRI54 solves system of ODEs with the Dormand and Prince 54 code.
     % INPUT
@@ -405,8 +407,9 @@ function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
     % rpar - parameters possibly needed in buinding yprime
     % yprime - Returned derivative column-vector; yprime(i)
     % = dy(i)/dt.
-    % tList - series of time points - JS NOV 2020
-    % y0 - Initial value column-vector.
+    % tList - series of time points - JS NOV 2020 - There is some
+    % programming issues that need to be dealt with - JW MAR 2021
+    % y0 - Initial value column-vector. used with tList(1) as the t0
     % tolerance - tolerance for the local error
     % OUTPUT
     % y - computed solution at y=t1.
@@ -415,61 +418,69 @@ function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
     % Sample code obtained from https://www.mathstools.com/section/main/dormand_prince_method#.X62QhmhKiUm
 
     %t=tList[1];
-    y=y0;
+    %t=tList(1); %t0 is the tList(1)
     tOut = tList';
-    yOut = zeros([length(tOut),length(y0)]); %turn this into gpuArray
+    yOut = zeros([length(tOut),length(y0)]);
+    %yOut = zeros([length(tOut),1]);
     yOut(1,:) = y0;
-    step=1;
-    t=tList(step);
-    %nrej=0; %commented. Used for number of rejected accuracy
-    %fcall=1; %Commented. Used for count function calls
-    k1=odeEmRayFun(t,y,rpar);
-
-    while step < length(tList)
-        %if t+h > t1; h=t1-t; end
-        t=tList(step);
-        h=tList(step+1)-tList(step);
-        k2=odeEmRayFun(t+h/5,y+h*k1/5,rpar);
-        k3=odeEmRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,rpar);
-        k4=odeEmRayFun(t+4*h/5,y+h*(cnst.a4(1)*k1+cnst.a4(2)*k2+cnst.a4(3)*k3),rpar);
-        k5=odeEmRayFun(t+8*h/9,y+h*(cnst.a5(1)*k1+cnst.a5(2)*k2+cnst.a5(3)*k3+cnst.a5(4)*k4),rpar);
-        k6=odeEmRayFun(t+h,y+h*(cnst.a6(1)*k1+cnst.a6(2)*k2+cnst.a6(3)*k3+cnst.a6(4)*k4+cnst.a6(5)*k5),rpar);
-        yt=y+h*(cnst.a7(1)*k1+cnst.a7(3)*k3+cnst.a7(4)*k4+cnst.a7(5)*k5+cnst.a7(6)*k6);
-        k2=odeEmRayFun(t+h,yt,rpar);
-        step = step + 1;
-        yOut(step,:) = yt;
-        iter_needed = false;
-        %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
-        %4 components each inside
-        est_dz = norm(h*(cnst.e(1)*k1(1)+cnst.e(2)*k2(1)+cnst.e(3)*k3(1)+cnst.e(4)*k4(1)+cnst.e(5)*k5(1)+cnst.e(6)*k6(1)),inf);
-        est_dr = norm(h*(cnst.e(1)*k1(2)+cnst.e(2)*k2(2)+cnst.e(3)*k3(2)+cnst.e(4)*k4(2)+cnst.e(5)*k5(2)+cnst.e(6)*k6(2)),inf);
-        est_dkz = norm(h*(cnst.e(1)*k1(3)+cnst.e(2)*k2(3)+cnst.e(3)*k3(3)+cnst.e(4)*k4(3)+cnst.e(5)*k5(3)+cnst.e(6)*k6(3)),inf);
-        est_dkr = norm(h*(cnst.e(1)*k1(4)+cnst.e(2)*k2(4)+cnst.e(3)*k3(4)+cnst.e(4)*k4(4)+cnst.e(5)*k5(4)+cnst.e(6)*k6(4)),inf);
-        %fcall=fcall+6; Used for counting function calls
-        % [t h est]
-        for est = [est_dz, est_dr, est_dkz, est_dkr]
-            if  est > tolerance
-                iter_needed = true;
+    %t=tList(step);
+    %nrej=0; Commented out to speed up the ode func
+    %fcall=1; Commented out to speed up the ode func
+    
+    
+    for i = 1:(length(tList)-1)
+        h=tolerance^(1/5)/4;
+        t = tList(i);
+        y = yOut(i,:)';
+        t1 =  tList(i+1);
+        next_iter = false;
+        while t < t1
+            k1 = odeEmRayFun(t,y,omega_ps,rayGd);
+            if t+h > t1 
+                h=t1-t;
+                next_iter = true;
             end
-        end
-        
-        if iter_needed == false
-            t=t+h;
-            k1=k2;
-            step=step+1;
-            y=yt;
-        else
-            %nrej=nrej+1;
-        end
-        
-        % Not sure which h to use. Choosing the smallest h
-        h_dz = .9*min((tolerance/(est_dz+eps))^(1/5),10)*h;
-        h_dr = .9*min((tolerance/(est_dr+eps))^(1/5),10)*h;
-        h_dkz = .9*min((tolerance/(est_dkz+eps))^(1/5),10)*h;
-        h_dkr = .9*min((tolerance/(est_dkr+eps))^(1/5),10)*h;
-        h = min([h_dz, h_dr, h_dkz, h_dkr]);
-    end
+            k2=odeEmRayFun(t+h/5,y+h*k1/5,omega_ps,rayGd);
+            k3=odeEmRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,omega_ps,rayGd);
+            k4=odeEmRayFun(t+4*h/5,y+h*(44/45*k1-56/15*k2+32/9*k3),omega_ps,rayGd);
+            k5=odeEmRayFun(t+8*h/9,y+h*(19372/6561*k1-25360/2187*k2+64448/6561*k3-212/729*k4),omega_ps,rayGd);
+            k6=odeEmRayFun(t+h,y+h*(9017/3168*k1-355/33*k2+46732/5247*k3+49/176*k4-5103/18656*k5),omega_ps,rayGd);
+            yt=y+h*(35/384*k1+500/1113*k3+125/192*k4-2187/6784*k5+11/84*k6);
+            k2=odeEmRayFun(t+h,yt,omega_ps,rayGd);
+            iter_needed = false;
+            %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
+            %4 components each inside
+            est_dz = norm(h*(71/57600*k1(1)-1/40*k2(1)-71/16695*k3(1)+71/1920*k4(1)-17253/339200*k5(1)+22/525*k6(1)),inf);
+            est_dr = norm(h*(71/57600*k1(2)-1/40*k2(2)-71/16695*k3(2)+71/1920*k4(2)-17253/339200*k5(2)+22/525*k6(2)),inf);
+            est_dkz = norm(h*(71/57600*k1(3)-1/40*k2(3)-71/16695*k3(3)+71/1920*k4(3)-17253/339200*k5(3)+22/525*k6(3)),inf);
+            est_dkr = norm(h*(71/57600*k1(4)-1/40*k2(4)-71/16695*k3(4)+71/1920*k4(4)-17253/339200*k5(4)+22/525*k6(4)),inf);
+            %fcall=fcall+6; Used for counting function calls
+            % [t h est]
+            for est = [est_dz, est_dr, est_dkz, est_dkr]
+                if  est > tolerance
+                    iter_needed = true;
+                end
+            end
 
+            if iter_needed == false
+                t=t+h;
+                y=yt;
+            end
+                
+            if next_iter
+                yOut(i+1,:)=yt;
+            end
+
+            % Not sure which h to use. Choosing the smallest h
+            h_dz = .9*min((tolerance/(est_dz+eps))^(1/5),10)*h;
+            h_dr = .9*min((tolerance/(est_dr+eps))^(1/5),10)*h;
+            h_dkz = .9*min((tolerance/(est_dkz+eps))^(1/5),10)*h;
+            h_dkr = .9*min((tolerance/(est_dkr+eps))^(1/5),10)*h;
+            h = min([h_dz, h_dr, h_dkz, h_dkr]);
+        end
+        
+        
+    end
 % Ignore the following for now - JS NOV 2020
 % This is record for how many steps are used. Can be ignored. - JW FEB 2021
 %     if nargout > 1
@@ -477,8 +488,7 @@ function [tOut,yOut] = Dopri54OdeEM(tList,y0,rpar)
 %     end
 end
 
-function [tOut,yOut] = Dopri54OdeLw(tList,y0,rpar)
-    
+function [tOut,yOut] = Dopri54OdeLw(tList,y0,omega_ps,rayGd,tolerance)
     % DOPRI54 solves system of ODEs with the Dormand and Prince 54 code.
     % INPUT
     % funcion - integrated to this file. Check at the end for the equation used
@@ -489,8 +499,9 @@ function [tOut,yOut] = Dopri54OdeLw(tList,y0,rpar)
     % rpar - parameters possibly needed in buinding yprime
     % yprime - Returned derivative column-vector; yprime(i)
     % = dy(i)/dt.
-    % tList - series of time points - JS NOV 2020
-    % y0 - Initial value column-vector.
+    % tList - series of time points - JS NOV 2020 - There is some
+    % programming issues that need to be dealt with - JW MAR 2021
+    % y0 - Initial value column-vector. used with tList(1) as the t0
     % tolerance - tolerance for the local error
     % OUTPUT
     % y - computed solution at y=t1.
@@ -499,61 +510,69 @@ function [tOut,yOut] = Dopri54OdeLw(tList,y0,rpar)
     % Sample code obtained from https://www.mathstools.com/section/main/dormand_prince_method#.X62QhmhKiUm
 
     %t=tList[1];
-    y=y0;
+    %t=tList(1); %t0 is the tList(1)
     tOut = tList';
-    yOut = zeros([length(tOut),length(y0)]); %turn this into gpuArray
+    yOut = zeros([length(tOut),length(y0)]);
+    %yOut = zeros([length(tOut),1]);
     yOut(1,:) = y0;
-    step=1;
-    t=tList(step);
+    %t=tList(step);
     %nrej=0; Commented out to speed up the ode func
     %fcall=1; Commented out to speed up the ode func
-    k1=odeLwRayFun(t,y,rpar);
-
-    while step < length(tList)
-        %if t+h > t1; h=t1-t; end
-        t=tList(step);
-        h=tList(step+1)-tList(step);
-        k2=odeLwRayFun(t+h/5,y+h*k1/5,rpar);
-        k3=odeLwRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,rpar);
-        k4=odeLwRayFun(t+4*h/5,y+h*(cnst.a4(1)*k1+cnst.a4(2)*k2+cnst.a4(3)*k3),rpar);
-        k5=odeLwRayFun(t+8*h/9,y+h*(cnst.a5(1)*k1+cnst.a5(2)*k2+cnst.a5(3)*k3+cnst.a5(4)*k4),rpar);
-        k6=odeLwRayFun(t+h,y+h*(cnst.a6(1)*k1+cnst.a6(2)*k2+cnst.a6(3)*k3+cnst.a6(4)*k4+cnst.a6(5)*k5),rpar);
-        yt=y+h*(cnst.a7(1)*k1+cnst.a7(3)*k3+cnst.a7(4)*k4+cnst.a7(5)*k5+cnst.a7(6)*k6);
-        k2=odeLwRayFun(t+h,yt,rpar);
-        step = step + 1;
-        yOut(step,:) = yt;
-        iter_needed = false;
-        %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
-        %4 components each inside
-        est_dz = norm(h*(cnst.e(1)*k1(1)+cnst.e(2)*k2(1)+cnst.e(3)*k3(1)+cnst.e(4)*k4(1)+cnst.e(5)*k5(1)+cnst.e(6)*k6(1)),inf);
-        est_dr = norm(h*(cnst.e(1)*k1(2)+cnst.e(2)*k2(2)+cnst.e(3)*k3(2)+cnst.e(4)*k4(2)+cnst.e(5)*k5(2)+cnst.e(6)*k6(2)),inf);
-        est_dkz = norm(h*(cnst.e(1)*k1(3)+cnst.e(2)*k2(3)+cnst.e(3)*k3(3)+cnst.e(4)*k4(3)+cnst.e(5)*k5(3)+cnst.e(6)*k6(3)),inf);
-        est_dkr = norm(h*(cnst.e(1)*k1(4)+cnst.e(2)*k2(4)+cnst.e(3)*k3(4)+cnst.e(4)*k4(4)+cnst.e(5)*k5(4)+cnst.e(6)*k6(4)),inf);
-        %fcall=fcall+6;
-        % [t h est]
-        for est = [est_dz, est_dr, est_dkz, est_dkr]
-            if  est > tolerance
-                iter_needed = true;
+    
+    
+    for i = 1:(length(tList)-1)
+        h=tolerance^(1/5)/4;
+        t = tList(i);
+        y = yOut(i,:)';
+        t1 =  tList(i+1);
+        next_iter = false;
+        while t < t1
+            k1 = odeLwRayFun(t,y,omega_ps,rayGd);
+            if t+h > t1 
+                h=t1-t;
+                next_iter = true;
             end
-        end
-        
-        if iter_needed == false
-            t=t+h;
-            k1=k2;
-            step=step+1;
-            y=yt;
-        else
-            %nrej=nrej+1;
-        end
-        
-        % Not sure which h to use. Choosing the smallest h
-        h_dz = .9*min((tolerance/(est_dz+eps))^(1/5),10)*h;
-        h_dr = .9*min((tolerance/(est_dr+eps))^(1/5),10)*h;
-        h_dkz = .9*min((tolerance/(est_dkz+eps))^(1/5),10)*h;
-        h_dkr = .9*min((tolerance/(est_dkr+eps))^(1/5),10)*h;
-        h = min([h_dz, h_dr, h_dkz, h_dkr]);
-    end
+            k2=odeLwRayFun(t+h/5,y+h*k1/5,omega_ps,rayGd);
+            k3=odeLwRayFun(t+3*h/10,y+h*(3*k1+9*k2)/40,omega_ps,rayGd);
+            k4=odeLwRayFun(t+4*h/5,y+h*(44/45*k1-56/15*k2+32/9*k3),omega_ps,rayGd);
+            k5=odeLwRayFun(t+8*h/9,y+h*(19372/6561*k1-25360/2187*k2+64448/6561*k3-212/729*k4),omega_ps,rayGd);
+            k6=odeLwRayFun(t+h,y+h*(9017/3168*k1-355/33*k2+46732/5247*k3+49/176*k4-5103/18656*k5),omega_ps,rayGd);
+            yt=y+h*(35/384*k1+500/1113*k3+125/192*k4-2187/6784*k5+11/84*k6);
+            k2=odeLwRayFun(t+h,yt,omega_ps,rayGd);
+            iter_needed = false;
+            %4 est for each dzdt,drdt,dkzdt,dkrdt components, each k1 to k6 has
+            %4 components each inside
+            est_dz = norm(h*(71/57600*k1(1)-1/40*k2(1)-71/16695*k3(1)+71/1920*k4(1)-17253/339200*k5(1)+22/525*k6(1)),inf);
+            est_dr = norm(h*(71/57600*k1(2)-1/40*k2(2)-71/16695*k3(2)+71/1920*k4(2)-17253/339200*k5(2)+22/525*k6(2)),inf);
+            est_dkz = norm(h*(71/57600*k1(3)-1/40*k2(3)-71/16695*k3(3)+71/1920*k4(3)-17253/339200*k5(3)+22/525*k6(3)),inf);
+            est_dkr = norm(h*(71/57600*k1(4)-1/40*k2(4)-71/16695*k3(4)+71/1920*k4(4)-17253/339200*k5(4)+22/525*k6(4)),inf);
+            %fcall=fcall+6; Used for counting function calls
+            % [t h est]
+            for est = [est_dz, est_dr, est_dkz, est_dkr]
+                if  est > tolerance
+                    iter_needed = true;
+                end
+            end
 
+            if iter_needed == false
+                t=t+h;
+                y=yt;
+            end
+                
+            if next_iter
+                yOut(i+1,:)=yt;
+            end
+
+            % Not sure which h to use. Choosing the smallest h
+            h_dz = .9*min((tolerance/(est_dz+eps))^(1/5),10)*h;
+            h_dr = .9*min((tolerance/(est_dr+eps))^(1/5),10)*h;
+            h_dkz = .9*min((tolerance/(est_dkz+eps))^(1/5),10)*h;
+            h_dkr = .9*min((tolerance/(est_dkr+eps))^(1/5),10)*h;
+            h = min([h_dz, h_dr, h_dkz, h_dkr]);
+        end
+        
+        
+    end
 % Ignore the following for now - JS NOV 2020
 % This is record for how many steps are used. Can be ignored. - JW FEB 2021
 %     if nargout > 1
