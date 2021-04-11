@@ -1,5 +1,5 @@
  
-function [time1,time2] = odeCompare(algo1,algo2)
+function [time1,time2,rayBundleB1,rayBundleB2,rayGd] = timeCompare(algo1,algo2)
      path(path,'../Plotting')
      path(path,'../Source')
      disp("begin")
@@ -115,7 +115,8 @@ function [time1,time2] = odeCompare(algo1,algo2)
          rayBundleB2 = algo2(rayBundleB2,rayGd,0.1);
      end
      time2 = toc;
-     disp("Time 1:" + time2)
+     disp("Time 2:" + time2)
+     
 end
 
 
