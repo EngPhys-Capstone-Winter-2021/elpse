@@ -41,14 +41,15 @@ function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
  ln10  = cnst.ln10;
  twopi = cnst.twopi;
  %initialize temp variable
- x0=0;
- k0=0;
- tPrev=0;
- tr=0;
- yr=0;
+ %x0=0;
+ %k0=0;
+ %tPrev=0;
+ %tr=0;
+ %yr=0;
  
  parfor rayIdx = 1:rayBundle.nrays
- 
+    x0 = zero(1,2);
+    k0 = zero(1,2);
      % check to see if we need to move this ray
      if halt(rayIdx)
          continue  % skip to next ray (iteration of loop)
