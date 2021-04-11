@@ -39,7 +39,7 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
  rayBundle_frequency = rayBundle.frequency;
  rayBundle_nc = rayBundle.nc;
  rayBundle_direction = rayBundle.direction;
- x0 = rayBundle_rayICs(:,1)';
+ %x0 = rayBundle_rayICs(:,1)';
  
 %addAttachedFiles(gcp,'pushBundleRectMulti.m');
  parfor rayIdx = 1:rayBundle_nrays
