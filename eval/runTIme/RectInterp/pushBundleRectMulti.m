@@ -118,12 +118,8 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep,cnst)
            case 'EM'
              [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
                                                 rayGd,cnstVar),tSpan,ray0);
-           %case 'EPW'
-           %  [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
-           %                                     rayGd),tSpan,ray0);           
-             otherwise
-             %placeholder
-             [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
+           case 'EPW'
+             [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
                                                 rayGd,cnstVar),tSpan,ray0);
          end
          
