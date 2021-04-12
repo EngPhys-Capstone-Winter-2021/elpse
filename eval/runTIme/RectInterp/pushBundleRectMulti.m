@@ -293,10 +293,10 @@ end
  % (JFM 21 July, 2020)
      
 
-     c = cVar(1);%.c;
-     clum  = cVar(2);
-     ln10  = cVar(3);
-     twopi = cVar(4);
+    c = cVar(1);%.c;
+    clum  = cVar(2);
+    ln10  = cVar(3);
+    twopi = cVar(4);
 
     % need these
     lambdaum = twopi*clum/abs(omega_ps); % vac wavelength microns
@@ -346,83 +346,89 @@ end
 end
 
  
-%  function dydt = odeLwRayFun(t,y,omega_ps,rayGd)
-%  % RHS for our ray ode for Langmuir waves
-%  %  output dydt is a column vector:
-%  %  dydt = [dz/dt,dr/dt,dk_z/dt,dk_r/dt]'
-%      
-%  % NOTE: here omega_ps is a scalar (since we deal with a single ray)
-%  
-%     global cnst
-% 
-%     clum  = (c)*(1.e-6); % speed of light in microns/ps
-%     ln10  = cnst.ln10;
-%     twopi = cnst.twopi;
-% 
-%     omega = omega_ps;   % wave frequency in rads/ps
-% 
-%     x = y(1:2);     % current position at phase space point y
-%     kVec = y(3:4);  % current ray wavevector at phase space point y
-%     k2 = dot(kVec,kVec);
-% 
-%     goodPt = inDomain(x',rayGd);       
-%     %goodPt = 1;    
-%     
-%     if goodPt
-%         % interpolation for current position
-%         [ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
-%         
-%         % density
-%         triValNe = rayGd.valsNe(rayGd.DT(ti,:));
-%         logNe = dot(bc',triValNe')';           % log10 of electron density
-%                                                %    disp(logNe)  % debugging
-%         wpe = (cnst.wpe)*sqrt(10^logNe)*1.e-12; % electron plasma
-%                                                 % frequency (rad/ps)
-%                                                 %    disp(wpe)
-% 
-%         triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
-%         dLogNedz = dot(bc',triValDLogNedz')';   % at phase space point
-%                                                 %    disp(dLogNedz)
-% 
-%         triValDLogNedr = rayGd.valsDLogNedr(rayGd.DT(ti,:));
-%         dLogNedr = dot(bc',triValDLogNedr')';   % at phase space point
-%                                                 %    disp(dLogNedr)
-%         
-%         % derivatives of electron temperature
-%         triValTe = rayGd.valsTe(rayGd.DT(ti,:));
-%         Te = dot(bc',triValTe')';        % electron temperature in eV
-%         vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of electron thermal velocity (um/ps)^2
-%         
-%         triValDLnTedz = rayGd.valsDLnTedz(rayGd.DT(ti,:));
-%         dLnTedz = dot(bc',triValDLnTedz')';   % at phase space point
-%                                               %    disp(dLnTedz)
-% 
-%         triValDLnTedr = rayGd.valsDLnTedr(rayGd.DT(ti,:));
-%         dLnTedr = dot(bc',triValDLnTedr')';   % at phase space point
-%                                               %    disp(dLnTedr)
-%         
-%         dzdt = (3.0*vTe2/omega)*kVec(1);
-%         drdt = (3.0*vTe2/omega)*kVec(2);
-%         
-%         dkzdt = -wpe^2/(2.0*omega)*ln10*dLogNedz - (3/2)*(k2*vTe2/ ...
-%                                                           omega)*dLnTedz;
-%         
-%         dkrdt = -wpe^2/(2.0*omega)*ln10*dLogNedr - (3/2)*(k2*vTe2/ ...
-%                                                           omega)*dLnTedr;
-%         
-%         dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector 
-%     else
-%         Te = 2000.0;                     % dummy electron temperature in eV
-%         vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of elec therm vel (um/ps)
-% 
-%         dzdt = (3.0*vTe2/omega)*kVec(1);
-%         drdt = (3.0*vTe2/omega)*kVec(2);
-%         
-%         dkzdt = 0.0;
-%         dkrdt = 0.0;
-%         
-%         dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector         
-%     end
-%     
-%  end
-% 
+function dydt = odeLwRayFun(t,y,omega_ps,rayGd,cVar)
+% RHS for our ray ode for Langmuir waves
+%  output dydt is a column vector:
+%  dydt = [dz/dt,dr/dt,dk_z/dt,dk_r/dt]'
+      
+  % NOTE: here omega_ps is a scalar (since we deal with a single ray)
+
+     
+    c = cVar(1);%.c;
+    clum  = cVar(2);
+    ln10  = cVar(3);
+    twopi = cVar(4);
+    
+    omega = omega_ps;   % wave frequency in rads/ps
+ 
+    x = y(1:2);     % current position at phase space point y
+    kVec = y(3:4);  % current ray wavevector at phase space point y
+    k2 = dot(kVec,kVec);
+ 
+    goodPt = inDomain(x',rayGd);       
+    %goodPt = 1;    
+     
+    if goodPt
+        % interpolation for current position
+        %[ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
+        
+        %triValNe = rayGd.valsNe(rayGd.DT(ti,:));
+        [ind1,ind2] = rectInterp2d(x,rayGd.uniqueZ,rayGd.uniqueR);
+        logNe = rectInterp2d_v2(x,rayGd.uniqueZ,rayGd.uniqueR,rayGd.grid,ind1,ind2);     % log10 of electron density
+        
+        %OLD interpolation for current position
+        %OLD [ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
+         
+        % density
+        %OLD triValNe = rayGd.valsNe(rayGd.DT(ti,:));
+        %OLD logNe = dot(bc',triValNe')';           % log10 of electron density
+                                               %    disp(logNe)  % debugging
+        wpe = (cnst.wpe)*sqrt(10^logNe)*1.e-12; % electron plasma
+                                                % frequency (rad/ps)
+                                                %    disp(wpe)
+        triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
+        dLogNedz = dot(bc',triValDLogNedz')';   % at phase space point
+                                                 %    disp(dLogNedz)
+ 
+        triValDLogNedr = rayGd.valsDLogNedr(rayGd.DT(ti,:));
+        dLogNedr = dot(bc',triValDLogNedr')';   % at phase space point
+                                                 %    disp(dLogNedr)
+         
+        % derivatives of electron temperature
+        triValTe = rayGd.valsTe(rayGd.DT(ti,:));
+        Te = dot(bc',triValTe')';        % electron temperature in eV
+        vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of electron thermal velocity (um/ps)^2
+        
+        triValDLnTedz = rayGd.valsDLnTedz(rayGd.DT(ti,:));
+        dLnTedz = dot(bc',triValDLnTedz')';   % at phase space point
+                                               %    disp(dLnTedz)
+ 
+        triValDLnTedr = rayGd.valsDLnTedr(rayGd.DT(ti,:));
+        dLnTedr = dot(bc',triValDLnTedr')';   % at phase space point
+                                               %    disp(dLnTedr)
+         
+        dzdt = (3.0*vTe2/omega)*kVec(1);
+        drdt = (3.0*vTe2/omega)*kVec(2);
+         
+        dkzdt = -wpe^2/(2.0*omega)*ln10*dLogNedz - (3/2)*(k2*vTe2/ ...
+                                                           omega)*dLnTedz;
+         
+        dkrdt = -wpe^2/(2.0*omega)*ln10*dLogNedr - (3/2)*(k2*vTe2/ ...
+                                                           omega)*dLnTedr;
+         
+        dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector 
+    else
+        Te = 2000.0;                     % dummy electron temperature in eV
+        vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of elec therm vel (um/ps)
+
+        dzdt = (3.0*vTe2/omega)*kVec(1);
+        drdt = (3.0*vTe2/omega)*kVec(2);
+         
+        dkzdt = 0.0;
+        dkrdt = 0.0;
+         
+        dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector         
+    end
+     
+end
+ 
