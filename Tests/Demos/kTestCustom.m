@@ -9,16 +9,16 @@ rmpath(pwd+"/" + '../../Source')
 
 
 
-nArray = 10;%
-tRun = 15;
+nArray = 1000;%
+tRun = 5.5;
 
 launchList.type = 'laserBeam';      % trigger for 'makeRayBundle'
 launchList.mode = 'forward';        % Could be backward also (neg omega?).
 launchList.nrays = nArray;
-launchList.frequency = 40*cnst.omega0; % 1/sec
+launchList.frequency = cnst.omega0; % 1/sec
 % center of spherical target
 launchList.focalPt = [-400,0];      % microns
-launchList.spot = struct('type','SG8','diameter',700); 
+launchList.spot = struct('type','SG8','diameter',90); 
 angle = 180+(-23.3); % (degres) is measured from "target norm"
 launchList.centroid = [cosd(angle),sind(angle)]; % unit vector in
                                                % direction of
@@ -33,7 +33,7 @@ times = [0];
 
 loadReqPaths(pset)
 tic
-rb = kTestCustomPart1("test1.mat",tRun,nArray,@pushBundleRect,launchList);
+rb = kTestCustomPart1("test1.mat",tRun,nArray,@pushBundleRectMulti_mex,launchList);
 times(2)=toc;
 unloadReqPaths(pset)
 
