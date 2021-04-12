@@ -1,5 +1,5 @@
 
-function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
+function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep,cnst)
 % 
 % First cut at developing a ray integrator for EM and other waves:
 % (JFM May 28, 2020)
@@ -12,8 +12,8 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
 %rayGd.grid
 %rayGd.uniqueR
 %rayGd.uniqueZ
- 
- global cnst
+ %path(path,'../../../Source')
+ %cnst = initC;
  
  %if ~exist('cnst','var')
  %    cnst = initCnst;              % will put more things in initCnst...
@@ -30,6 +30,11 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
  %
  % Integrate all the rays in the bundle one at a time
  %
+ c=cnst.c;
+ clum  = (c)*(1.e-6);  % speed of light in microns/ps
+ ln10  = cnst.ln10;
+ twopi = cnst.twopi;
+ cnstVar = [c,clum,ln10,twopi];
  
  rayBundle_nrays = rayBundle.nrays;
  rayBundle_halt = rayBundle.halt;
@@ -43,7 +48,9 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
  
 %addAttachedFiles(gcp,'pushBundleRectMulti.m');
  parfor rayIdx = 1:rayBundle_nrays
- 
+     x0 = zeros(1,2);
+     k0 = zeros(1,2);
+     tPrev = 0;
      % check to see if we need to move this ray
      if rayBundle_halt(rayIdx)
          continue  % skip to next ray (iteration of loop)
@@ -58,14 +65,14 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
              % modify arguments to "toDispSurface()" to only what is
              % needed
              %
-             k0 = toDispSurface(x0,rayBundle_nc,rayIdx,rayGd,rayBundle_frequency,rayBundle_direction,cnst.c);         
+             k0 = toDispSurface(x0,rayBundle_nc,rayIdx,rayGd,rayBundle_frequency,rayBundle_direction,cnstVar);         
              tPrev = 0;                         % start from t=0
          %else
              %error('Currently new trajectories are for EM waves only')
          end         
      else
          lastInfo = rayBundle_trajs{rayIdx}(end,:); % use the last time info
-         x0 = single(lastInfo(2:3));   % position row vector
+         x0 = lastInfo(2:3);   % position row vector
          k0 = lastInfo(4:5);   % wave vector row vector
          tPrev = lastInfo(1);
      end
@@ -110,14 +117,14 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
          switch waveType
            case 'EM'
              [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
-                                                rayGd,cnst),tSpan,ray0);
+                                                rayGd,cnstVar),tSpan,ray0);
            %case 'EPW'
            %  [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
            %                                     rayGd),tSpan,ray0);           
              otherwise
              %placeholder
              [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
-                                                rayGd),tSpan,ray0);
+                                                rayGd,cnstVar),tSpan,ray0);
          end
          
          newTraj = [tr,yr];   % because otherwise ode45 will return
@@ -133,6 +140,7 @@ function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep)
          % attach solution to rayBundle structure
          %  have two cases here... 
          if trajIsNew
+             %rayBundle_trajs{rayIdx} = zeros(size(newTraj));
              rayBundle_trajs{rayIdx} = newTraj;
          else
              % append to existing
@@ -159,12 +167,16 @@ end
  % Local functions follow:
  %
 
- function k0 = toDispSurface(x0,rayBundle_nc,rayIdx,rayGd,rayBundle_frequency,rayBundle_direction,cnst_c)
+ function k0 = toDispSurface(x0,rayBundle_nc,rayIdx,rayGd,rayBundle_frequency,rayBundle_direction,cnstVar)
  % TODISPSURFACE - to do later
  %   
  % TO DO: need this function to work on EPW also
      
      %global cnst
+     cnst_c = cnstVar(1);%.c;
+     clum  = cnstVar(2);
+     ln10  = cnstVar(3);
+     twopi = cnstVar(4);
      
      % get magnitude of local wavevector
      omega = rayBundle_frequency(rayIdx);       % 1/s
@@ -232,7 +244,7 @@ end
     
     switch waveType
       case 'EM'
-        speed = cnst.cumps;  % vacuum speed of light in um/ps
+        speed = cumps;  % vacuum speed of light in um/ps
       case 'EPW'
         % interpOnTraj wants y0 to be a row vector
         %
@@ -254,7 +266,7 @@ end
  end
 
  
- function dydt = odeEmRayFun(t,y,omega_ps,rayGd,cnst)
+ function dydt = odeEmRayFun(t,y,omega_ps,rayGd,cVar)
  % RHS for our ray ode for electromagnetic waves
  %
  %     t        - time in ps
@@ -281,9 +293,10 @@ end
  % (JFM 21 July, 2020)
      
 
-    clum  = (cnst.c)*(1.e-6); % speed of light in microns/ps
-    ln10  = cnst.ln10;
-    twopi = cnst.twopi;
+     c = cVar(1);%.c;
+     clum  = cVar(2);
+     ln10  = cVar(3);
+     twopi = cVar(4);
 
     % need these
     lambdaum = twopi*clum/abs(omega_ps); % vac wavelength microns
@@ -342,7 +355,7 @@ end
 %  
 %     global cnst
 % 
-%     clum  = (cnst.c)*(1.e-6); % speed of light in microns/ps
+%     clum  = (c)*(1.e-6); % speed of light in microns/ps
 %     ln10  = cnst.ln10;
 %     twopi = cnst.twopi;
 % 

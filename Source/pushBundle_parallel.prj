@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2018b">
-  <configuration build-checksum="3057593371" file="/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.prj" location="/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp" name="pushBundleRectMulti" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration file="/home/janukan/CapstoneWinter/elpse/Source/pushBundle_parallel.prj" location="/home/janukan/CapstoneWinter/elpse/Source" name="pushBundle_parallel" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -850,7 +850,7 @@
     <param.TestSnippets />
     <param.ExternalFcnMajority>column</param.ExternalFcnMajority>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
-    <param.outputfile>${PROJECT_ROOT}/pushBundleRectMulti_mex.mexa64</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}/pushBundle_parallel_mex.mexa64</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>false</param.HasECoderFeatures>
     <param.HasGpuCoder>true</param.HasGpuCoder>
@@ -865,21 +865,21 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>4252182446</param.AnnotationChecksum>
+    <param.AnnotationChecksum />
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
-    <var.DismissScreener>false</var.DismissScreener>
+    <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
-    <var.gc.lastOutputRoot>codegen/mex/pushBundleRectMulti</var.gc.lastOutputRoot>
+    <var.gc.lastOutputRoot>codegen/mex/pushBundle_parallel</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>MEX_FILE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>3057593371</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>3630218071</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot />
     <var.cfi.preBuildChecksum />
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;258582207&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/Source/initCnst.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/Source/interpOnTraj.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/Source/pushBundle_parallel.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;560037052&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/Source/initCnst.m&lt;/file&gt;&lt;file&gt;/home/janukan/CapstoneWinter/elpse/Source/pushBundle_parallel.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
     <param.configImportActive>false</param.configImportActive>
@@ -888,10 +888,10 @@
     <var.boundToGui>true</var.boundToGui>
     <var.isConfigDialog>false</var.isConfigDialog>
     <var.ecoderEnabled>false</var.ecoderEnabled>
-    <param.mex.outputfile>pushBundleRectMulti_mex</param.mex.outputfile>
-    <param.grt.outputfile>pushBundleRectMulti</param.grt.outputfile>
+    <param.mex.outputfile>pushBundle_parallel_mex</param.mex.outputfile>
+    <param.grt.outputfile>pushBundle_parallel</param.grt.outputfile>
     <param.artifact>option.target.artifact.mex</param.artifact>
-    <param.outputfile>${PROJECT_ROOT}/pushBundleRectMulti_mex.mexa64</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}/pushBundle_parallel_mex.mexa64</param.outputfile>
     <param.CppNamespace />
     <param.CppPackagesToNamespaces>true</param.CppPackagesToNamespaces>
     <param.CppNamespaceForMathworksCode>coder</param.CppNamespaceForMathworksCode>
@@ -993,11 +993,11 @@
       <param.AutoInferUnboundedSizeThreshold />
       <param.EnableFixedPointStep />
       <param.EnableScreener />
+      <param.AnnotationChecksum />
       <var.LegacyTarget />
       <var.MirrorOnOpen />
       <param.FixedPointEnabled />
       <var.redirectedInputTypeData />
-      <var.DismissScreener />
       <param.unifiedParamStorage />
       <var.cfi.lastOutputRoot />
       <var.cfi.preBuildChecksum />
@@ -1094,74 +1094,59 @@
       <param.FixedPointUseDesignRanges />
     </unset>
     <fileset.entrypoints>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}/pushBundleRectMulti.m">
-        <Marker>1618173278559</Marker>
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}/pushBundle_parallel.m">
+        <Marker>1618170450750</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench />
     <fileset.inputtypes>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}/pushBundleRectMulti.m">
-        <Inputs fileName="pushBundleRectMulti.m" functionName="pushBundleRectMulti">
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}/pushBundle_parallel.m">
+        <Inputs fileName="pushBundle_parallel.m" functionName="pushBundle_parallel">
           <Input Name="rayBundle" typeId="0">
             <Field Name="frequency" typeId="1" />
             <Field Name="nc" typeId="1" />
             <Field Name="name" typeId="2" />
-            <Field Name="type" typeId="2" />
-            <Field Name="mode" typeId="2" />
-            <Field Name="nrays" typeId="3" />
-            <Field Name="direction" typeId="4" />
-            <Field Name="rayICs" typeId="5" />
-            <Field Name="trajs" typeId="6">
-              <Field Name="{:}" typeId="7" />
+            <Field Name="type" typeId="3" />
+            <Field Name="mode" typeId="4" />
+            <Field Name="nrays" typeId="5" />
+            <Field Name="direction" typeId="6" />
+            <Field Name="rayICs" typeId="7" />
+            <Field Name="trajs" typeId="8">
+              <Field Name="{:}" typeId="9" />
             </Field>
             <Field Name="halt" typeId="1" />
           </Input>
-          <Input Name="rayGd" typeId="8">
-            <Field Name="iTime" typeId="3" />
-            <Field Name="time" typeId="3" />
-            <Field Name="zSblock" typeId="7" />
-            <Field Name="rSblock" typeId="7" />
-            <Field Name="domain" typeId="9" />
-            <Field Name="neblock" typeId="7" />
-            <Field Name="valsNe" typeId="10" />
-            <Field Name="valsDLogNedz" typeId="10" />
-            <Field Name="valsDLogNedr" typeId="11" />
-            <Field Name="teblock" typeId="12" />
-            <Field Name="valsTe" typeId="11" />
-            <Field Name="valsDLnTedz" typeId="11" />
-            <Field Name="valsDLnTedr" typeId="11" />
-            <Field Name="vzblock" typeId="12" />
-            <Field Name="valsVz" typeId="11" />
-            <Field Name="vrblock" typeId="12" />
-            <Field Name="valsVr" typeId="11" />
-            <Field Name="Zbarblock" typeId="12" />
-            <Field Name="valsZbar" typeId="11" />
-            <Field Name="Zsqrblock" typeId="12" />
-            <Field Name="valsZsqr" typeId="11" />
-            <Field Name="uniqueR" typeId="13" />
-            <Field Name="uniqueZ" typeId="14" />
-            <Field Name="grid" typeId="12" />
-            <Field Name="gridR" typeId="12" />
-            <Field Name="gridZ" typeId="12" />
+          <Input Name="rayGd" typeId="10">
+            <Field Name="iTime" typeId="5" />
+            <Field Name="time" typeId="5" />
+            <Field Name="zSblock" typeId="11" />
+            <Field Name="rSblock" typeId="11" />
+            <Field Name="domain" typeId="12" />
+            <Field Name="neblock" typeId="11" />
+            <Field Name="valsNe" typeId="13" />
+            <Field Name="valsDLogNedz" typeId="13" />
+            <Field Name="valsDLogNedr" typeId="13" />
+            <Field Name="teblock" typeId="11" />
+            <Field Name="valsTe" typeId="13" />
+            <Field Name="valsDLnTedz" typeId="13" />
+            <Field Name="valsDLnTedr" typeId="13" />
+            <Field Name="vzblock" typeId="11" />
+            <Field Name="valsVz" typeId="13" />
+            <Field Name="vrblock" typeId="11" />
+            <Field Name="valsVr" typeId="13" />
+            <Field Name="Zbarblock" typeId="11" />
+            <Field Name="valsZbar" typeId="13" />
+            <Field Name="Zsqrblock" typeId="11" />
+            <Field Name="valsZsqr" typeId="13" />
+            <Field Name="uniqueR" typeId="14" />
+            <Field Name="uniqueZ" typeId="15" />
+            <Field Name="grid" typeId="11" />
+            <Field Name="gridR" typeId="11" />
+            <Field Name="gridZ" typeId="11" />
           </Input>
-          <Input Name="tStep" typeId="15" />
-          <Input Name="cnst" typeId="16">
-            <Field Name="c" typeId="3" />
-            <Field Name="e" typeId="3" />
-            <Field Name="eps0" typeId="3" />
-            <Field Name="mp" typeId="3" />
-            <Field Name="pi" typeId="3" />
-            <Field Name="twopi" typeId="3" />
-            <Field Name="ln10" typeId="3" />
-            <Field Name="cumps" typeId="3" />
-            <Field Name="vTe1eV" typeId="3" />
-            <Field Name="wpe" typeId="3" />
-            <Field Name="lamDebye" typeId="3" />
-            <Field Name="vosc" typeId="3" />
-            <Field Name="voscToC" typeId="3" />
-            <Field Name="lambda0" typeId="3" />
-            <Field Name="omega0" typeId="3" />
-          </Input>
+          <Input Name="tStep" typeId="16" />
+          <Input Name="margin" typeId="17" />
+          <Input Name="npts" typeId="18" />
           <idpTable>
             <type typeId="0">
               <Class>struct</Class>
@@ -1176,7 +1161,7 @@
             </type>
             <type typeId="1">
               <Class>double</Class>
-              <Size>1 x :inf</Size>
+              <Size>1 x 100</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
@@ -1185,12 +1170,26 @@
             </type>
             <type typeId="2">
               <Class>char</Class>
-              <Size>1 x :inf</Size>
+              <Size>1 x 9</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
             </type>
             <type typeId="3">
+              <Class>char</Class>
+              <Size>1 x 2</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+            </type>
+            <type typeId="4">
+              <Class>char</Class>
+              <Size>1 x 7</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+            </type>
+            <type typeId="5">
               <Class>double</Class>
               <Size>1 x 1</Size>
               <Value />
@@ -1199,7 +1198,7 @@
               <Complex>false</Complex>
               <Sparse>false</Sparse>
             </type>
-            <type typeId="4">
+            <type typeId="6">
               <Class>double</Class>
               <Size>1 x 2</Size>
               <Value />
@@ -1208,26 +1207,9 @@
               <Complex>false</Complex>
               <Sparse>false</Sparse>
             </type>
-            <type typeId="5">
-              <Class>double</Class>
-              <Size>2 x :inf</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>true</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
-            <type typeId="6">
-              <Class>cell</Class>
-              <Size>1 x :inf</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>true</UserDefined>
-              <Homogeneous>true</Homogeneous>
-            </type>
             <type typeId="7">
               <Class>double</Class>
-              <Size>:inf x :inf</Size>
+              <Size>2 x 100</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
@@ -1235,6 +1217,23 @@
               <Sparse>false</Sparse>
             </type>
             <type typeId="8">
+              <Class>cell</Class>
+              <Size>1 x 100</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+              <Homogeneous>true</Homogeneous>
+            </type>
+            <type typeId="9">
+              <Class>double</Class>
+              <Size>0 x 0</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+              <Complex>false</Complex>
+              <Sparse>false</Sparse>
+            </type>
+            <type typeId="10">
               <Class>struct</Class>
               <Size>1 x 1</Size>
               <Value>rayGd</Value>
@@ -1245,34 +1244,7 @@
               <HeaderFile />
               <Alignment>-1</Alignment>
             </type>
-            <type typeId="9">
-              <Class>double</Class>
-              <Size>1 x 4</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>true</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
-            <type typeId="10">
-              <Class>double</Class>
-              <Size>:inf x 1</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>true</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
             <type typeId="11">
-              <Class>double</Class>
-              <Size>54264 x 1</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>true</UserDefined>
-              <Complex>false</Complex>
-              <Sparse>false</Sparse>
-            </type>
-            <type typeId="12">
               <Class>double</Class>
               <Size>323 x 168</Size>
               <Value />
@@ -1281,9 +1253,18 @@
               <Complex>false</Complex>
               <Sparse>false</Sparse>
             </type>
+            <type typeId="12">
+              <Class>double</Class>
+              <Size>1 x 4</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+              <Complex>false</Complex>
+              <Sparse>false</Sparse>
+            </type>
             <type typeId="13">
               <Class>double</Class>
-              <Size>168 x 1</Size>
+              <Size>54264 x 1</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
@@ -1292,7 +1273,7 @@
             </type>
             <type typeId="14">
               <Class>double</Class>
-              <Size>323 x 1</Size>
+              <Size>168 x 1</Size>
               <Value />
               <InitialValue />
               <UserDefined>true</UserDefined>
@@ -1301,6 +1282,15 @@
             </type>
             <type typeId="15">
               <Class>double</Class>
+              <Size>323 x 1</Size>
+              <Value />
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+              <Complex>false</Complex>
+              <Sparse>false</Sparse>
+            </type>
+            <type typeId="16">
+              <Class>double</Class>
               <Size>1 x 1</Size>
               <Value>tPush</Value>
               <InitialValue />
@@ -1308,23 +1298,30 @@
               <Complex>false</Complex>
               <Sparse>false</Sparse>
             </type>
-            <type typeId="16">
-              <Class>struct</Class>
-              <Size>1 x 1</Size>
-              <Value>initCnst</Value>
+            <type typeId="17">
+              <Class>double</Class>
+              <Size>1 x 4</Size>
+              <Value>[150 150 150 150]</Value>
               <InitialValue />
               <UserDefined>true</UserDefined>
-              <TypeName />
-              <Extern>false</Extern>
-              <HeaderFile />
-              <Alignment>-1</Alignment>
+              <Complex>false</Complex>
+              <Sparse>false</Sparse>
+            </type>
+            <type typeId="18">
+              <Class>double</Class>
+              <Size>1 x 1</Size>
+              <Value>2000</Value>
+              <InitialValue />
+              <UserDefined>true</UserDefined>
+              <Complex>false</Complex>
+              <Sparse>false</Sparse>
             </type>
           </idpTable>
         </Inputs>
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="pushBundleRectMulti_mex.mexa64" optional="false">/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti_mex.mexa64</file>
+      <file location="${PROJECT_ROOT}" name="pushBundle_parallel_mex.mexa64" optional="false">/home/janukan/CapstoneWinter/elpse/Source/pushBundle_parallel_mex.mexa64</file>
     </build-deliverables>
     <workflow />
     <matlab>

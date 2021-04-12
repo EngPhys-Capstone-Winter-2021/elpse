@@ -1,4 +1,4 @@
-nArray = 100:100:1000;
+nArray = 100:100:10000;
 path(path,'../../Source')
 path(path,'RectInterp')
 global cnst
@@ -27,13 +27,13 @@ data4 = speedTestMult("test1.mat",3.7,nArray,@pushBundleRectMulti_mex);
 unloadReqPaths(pset4)
 
 
-data = [data1,data2,data3,data4];
+data = [datadata3,data4];
 %data = [data1,data2,data3,data4,data5,data6];
 %legText = ["DoPri 45 Rect",FDoPri45 RECT Comp"];
 %legText = ["Original","Rect. Interp","Geometric","DoPri 45","DoPri45 RECT","comp"];
-legText = ["norm","rect","mult","comp"];
+legText = ["norm","mult"];
 plotSpeeds(nArray,data,legText)
 title("Runtime of ODE Solvers")
-for i = 1:4
+for i = 1:2
    disp(polyfit(nArray,data(:,i),1)*1e3) 
 end

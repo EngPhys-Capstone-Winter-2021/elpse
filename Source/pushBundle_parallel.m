@@ -1,5 +1,5 @@
 
-function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
+function bundleOut = pushBundle_parallel(rayBundle,rayGd,tStep,margin,npts)
 % 
 % First cut at developing a ray integrator for EM and other waves:
 % (JFM May 28, 2020)
