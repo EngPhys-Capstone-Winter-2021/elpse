@@ -32,32 +32,27 @@ static emlrtRSInfo b_emlrtRSI = { 68,  /* lineNo */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
 
-static emlrtRSInfo c_emlrtRSI = { 119, /* lineNo */
+static emlrtRSInfo c_emlrtRSI = { 121, /* lineNo */
   "pushBundleRectMulti",               /* fcnName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
 
-static emlrtRSInfo d_emlrtRSI = { 126, /* lineNo */
+static emlrtRSInfo d_emlrtRSI = { 128, /* lineNo */
   "pushBundleRectMulti",               /* fcnName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
 
-static emlrtRSInfo e_emlrtRSI = { 130, /* lineNo */
+static emlrtRSInfo e_emlrtRSI = { 146, /* lineNo */
   "pushBundleRectMulti",               /* fcnName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
 
-static emlrtRSInfo f_emlrtRSI = { 148, /* lineNo */
-  "pushBundleRectMulti",               /* fcnName */
-  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
-};
-
-static emlrtRSInfo g_emlrtRSI = { 191, /* lineNo */
+static emlrtRSInfo f_emlrtRSI = { 189, /* lineNo */
   "toDispSurface",                     /* fcnName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
 
-static emlrtRSInfo i_emlrtRSI = { 194, /* lineNo */
+static emlrtRSInfo h_emlrtRSI = { 192, /* lineNo */
   "toDispSurface",                     /* fcnName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pathName */
 };
@@ -86,7 +81,7 @@ static emlrtRTEInfo e_emlrtRTEI = { 283,/* lineNo */
 
 static emlrtBCInfo emlrtBCI = { -1,    /* iFirst */
   -1,                                  /* iLast */
-  147,                                 /* lineNo */
+  145,                                 /* lineNo */
   40,                                  /* colNo */
   "rayBundle_trajs",                   /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -116,7 +111,7 @@ static emlrtBCInfo c_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo d_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  147,                                 /* lineNo */
+  145,                                 /* lineNo */
   50,                                  /* colNo */
   "rayBundle_trajs{rayIdx}",           /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -126,7 +121,7 @@ static emlrtBCInfo d_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo e_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  147,                                 /* lineNo */
+  145,                                 /* lineNo */
   48,                                  /* colNo */
   "rayBundle_trajs{rayIdx}",           /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -136,7 +131,7 @@ static emlrtBCInfo e_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo f_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  135,                                 /* lineNo */
+  133,                                 /* lineNo */
   37,                                  /* colNo */
   "yr",                                /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -206,7 +201,7 @@ static emlrtDCInfo emlrtDCI = { 50,    /* lineNo */
 
 static emlrtBCInfo k_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  144,                                 /* lineNo */
+  142,                                 /* lineNo */
   30,                                  /* colNo */
   "rayBundle_trajs",                   /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -226,7 +221,7 @@ static emlrtBCInfo l_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo m_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  137,                                 /* lineNo */
+  135,                                 /* lineNo */
   14,                                  /* colNo */
   "rayBundle_halt",                    /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -236,7 +231,7 @@ static emlrtBCInfo m_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo n_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  144,                                 /* lineNo */
+  142,                                 /* lineNo */
   14,                                  /* colNo */
   "rayBundle_trajs",                   /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -246,7 +241,7 @@ static emlrtBCInfo n_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo o_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  148,                                 /* lineNo */
+  146,                                 /* lineNo */
   14,                                  /* colNo */
   "rayBundle_trajs",                   /* aName */
   "pushBundleRectMulti",               /* fName */
@@ -276,7 +271,17 @@ static emlrtBCInfo q_emlrtBCI = { -1,  /* iFirst */
 
 static emlrtBCInfo r_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  182,                                 /* lineNo */
+  133,                                 /* lineNo */
+  41,                                  /* colNo */
+  "yr",                                /* aName */
+  "pushBundleRectMulti",               /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo s_emlrtBCI = { -1,  /* iFirst */
+  -1,                                  /* iLast */
+  180,                                 /* lineNo */
   34,                                  /* colNo */
   "rayBundle_frequency",               /* aName */
   "toDispSurface",                     /* fName */
@@ -284,13 +289,93 @@ static emlrtBCInfo r_emlrtBCI = { -1,  /* iFirst */
   0                                    /* checkKind */
 };
 
-static emlrtBCInfo s_emlrtBCI = { -1,  /* iFirst */
+static emlrtBCInfo t_emlrtBCI = { -1,  /* iFirst */
   -1,                                  /* iLast */
-  193,                                 /* lineNo */
+  191,                                 /* lineNo */
   24,                                  /* colNo */
   "rayBundle_nc",                      /* aName */
   "toDispSurface",                     /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo u_emlrtBCI = { 1,   /* iFirst */
+  323,                                 /* iLast */
+  2,                                   /* lineNo */
+  16,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo v_emlrtBCI = { 1,   /* iFirst */
+  168,                                 /* iLast */
+  2,                                   /* lineNo */
+  24,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo w_emlrtBCI = { 1,   /* iFirst */
+  323,                                 /* iLast */
+  3,                                   /* lineNo */
+  16,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo x_emlrtBCI = { 1,   /* iFirst */
+  168,                                 /* iLast */
+  4,                                   /* lineNo */
+  22,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo y_emlrtBCI = { 1,   /* iFirst */
+  323,                                 /* iLast */
+  5,                                   /* lineNo */
+  16,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo ab_emlrtBCI = { 1,  /* iFirst */
+  168,                                 /* iLast */
+  5,                                   /* lineNo */
+  24,                                  /* colNo */
+  "vGrid",                             /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo bb_emlrtBCI = { 1,  /* iFirst */
+  323,                                 /* iLast */
+  7,                                   /* lineNo */
+  59,                                  /* colNo */
+  "dim1_val",                          /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
+  0                                    /* checkKind */
+};
+
+static emlrtBCInfo cb_emlrtBCI = { 1,  /* iFirst */
+  168,                                 /* iLast */
+  9,                                   /* lineNo */
+  34,                                  /* colNo */
+  "dim2_val",                          /* aName */
+  "rectInterp2d_v2",                   /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d_v2.m",/* pName */
   0                                    /* checkKind */
 };
 
@@ -300,52 +385,68 @@ static emlrtRTEInfo g_emlrtRTEI = { 13,/* lineNo */
   "/usr/local/MATLAB/R2020b/toolbox/eml/lib/matlab/elfun/sqrt.m"/* pName */
 };
 
-static emlrtRTEInfo l_emlrtRTEI = { 162,/* lineNo */
+static emlrtRTEInfo l_emlrtRTEI = { 160,/* lineNo */
   2,                                   /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
 };
 
-static emlrtRTEInfo m_emlrtRTEI = { 130,/* lineNo */
-  10,                                  /* colNo */
+static emlrtRTEInfo m_emlrtRTEI = { 116,/* lineNo */
+  6,                                   /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
 };
 
-static emlrtRTEInfo n_emlrtRTEI = { 144,/* lineNo */
-  14,                                  /* colNo */
+static emlrtRTEInfo n_emlrtRTEI = { 117,/* lineNo */
+  6,                                   /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
 };
 
-static emlrtRTEInfo o_emlrtRTEI = { 147,/* lineNo */
-  24,                                  /* colNo */
-  "pushBundleRectMulti",               /* fName */
-  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
-};
-
-static emlrtRTEInfo p_emlrtRTEI = { 148,/* lineNo */
-  14,                                  /* colNo */
-  "pushBundleRectMulti",               /* fName */
-  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
-};
-
-static emlrtRTEInfo q_emlrtRTEI = { 119,/* lineNo */
+static emlrtRTEInfo o_emlrtRTEI = { 121,/* lineNo */
   18,                                  /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
 };
 
-static emlrtRTEInfo r_emlrtRTEI = { 119,/* lineNo */
-  15,                                  /* colNo */
+static emlrtRTEInfo p_emlrtRTEI = { 128,/* lineNo */
+  10,                                  /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
 };
 
-static emlrtRTEInfo s_emlrtRTEI = { 147,/* lineNo */
+static emlrtRTEInfo q_emlrtRTEI = { 142,/* lineNo */
   14,                                  /* colNo */
   "pushBundleRectMulti",               /* fName */
   "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
+};
+
+static emlrtRTEInfo r_emlrtRTEI = { 145,/* lineNo */
+  24,                                  /* colNo */
+  "pushBundleRectMulti",               /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
+};
+
+static emlrtRTEInfo s_emlrtRTEI = { 146,/* lineNo */
+  14,                                  /* colNo */
+  "pushBundleRectMulti",               /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
+};
+
+static emlrtRTEInfo t_emlrtRTEI = { 145,/* lineNo */
+  14,                                  /* colNo */
+  "pushBundleRectMulti",               /* fName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/pushBundleRectMulti.m"/* pName */
+};
+
+static emlrtRSInfo kb_emlrtRSI = { 2,  /* lineNo */
+  "rectInterp2d",                      /* fcnName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d.m"/* pathName */
+};
+
+static emlrtRSInfo mb_emlrtRSI = { 3,  /* lineNo */
+  "rectInterp2d",                      /* fcnName */
+  "/home/janukan/CapstoneWinter/elpse/eval/runTIme/RectInterp/rectInterp2d.m"/* pathName */
 };
 
 /* Function Declarations */
@@ -386,7 +487,7 @@ static void toDispSurface(const emlrtStack *sp, const real_T x0[2], const
   if (((int32_T)rayIdx < 1) || ((int32_T)rayIdx > rayBundle_frequency->size[1]))
   {
     emlrtDynamicBoundsCheckR2012b((int32_T)rayIdx, 1, rayBundle_frequency->size
-      [1], &r_emlrtBCI, sp);
+      [1], &s_emlrtBCI, sp);
   }
 
   /*  1/s */
@@ -397,57 +498,57 @@ static void toDispSurface(const emlrtStack *sp, const real_T x0[2], const
   /*  we assume light - need to fix to be more general */
   /*     we can use rayBundle_type for this... */
   /*  1/um */
-  st.site = &jb_emlrtRSI;
-  ind1 = closest_val(&st, rayGd_uniqueZ, x0[0]);
   st.site = &kb_emlrtRSI;
+  ind1 = closest_val(&st, rayGd_uniqueZ, x0[0]);
+  st.site = &mb_emlrtRSI;
   ind2 = b_closest_val(&st, rayGd_uniqueR, x0[1]);
-  st.site = &g_emlrtRSI;
+  st.site = &f_emlrtRSI;
   if (((int32_T)(ind1 - 1.0) < 1) || ((int32_T)(ind1 - 1.0) > 323)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &t_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &u_emlrtBCI,
       &st);
   }
 
   if (((int32_T)ind2 < 1) || ((int32_T)ind2 > 168)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)ind2, 1, 168, &u_emlrtBCI, &st);
+    emlrtDynamicBoundsCheckR2012b((int32_T)ind2, 1, 168, &v_emlrtBCI, &st);
   }
 
   if (((int32_T)ind1 < 1) || ((int32_T)ind1 > 323)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)ind1, 1, 323, &v_emlrtBCI, &st);
+    emlrtDynamicBoundsCheckR2012b((int32_T)ind1, 1, 323, &w_emlrtBCI, &st);
   }
 
   if (((int32_T)(ind2 - 1.0) < 1) || ((int32_T)(ind2 - 1.0) > 168)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &w_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &x_emlrtBCI,
       &st);
   }
 
   if (((int32_T)(ind1 - 1.0) < 1) || ((int32_T)(ind1 - 1.0) > 323)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &x_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &y_emlrtBCI,
       &st);
   }
 
   if (((int32_T)(ind2 - 1.0) < 1) || ((int32_T)(ind2 - 1.0) > 168)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &y_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &ab_emlrtBCI,
       &st);
   }
 
   if (((int32_T)(ind1 - 1.0) < 1) || ((int32_T)(ind1 - 1.0) > 323)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &ab_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind1 - 1.0), 1, 323, &bb_emlrtBCI,
       &st);
   }
 
   if (((int32_T)(ind2 - 1.0) < 1) || ((int32_T)(ind2 - 1.0) > 168)) {
-    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &bb_emlrtBCI,
+    emlrtDynamicBoundsCheckR2012b((int32_T)(ind2 - 1.0), 1, 168, &cb_emlrtBCI,
       &st);
   }
 
   /* interpOnTraj('valsNe',[x0 x0],rayGd); */
   if (((int32_T)rayIdx < 1) || ((int32_T)rayIdx > rayBundle_nc->size[1])) {
     emlrtDynamicBoundsCheckR2012b((int32_T)rayIdx, 1, rayBundle_nc->size[1],
-      &s_emlrtBCI, sp);
+      &t_emlrtBCI, sp);
   }
 
   /*  1/cm3 */
-  st.site = &i_emlrtRSI;
+  st.site = &h_emlrtRSI;
   x_tmp = 323 * ((int32_T)ind2 - 1);
   b_x_tmp = rayGd_uniqueZ[(int32_T)ind1 - 1];
   c_x_tmp = rayGd_uniqueZ[(int32_T)(ind1 - 1.0) - 1];
@@ -520,6 +621,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
   emlrtStack c_st;
   emlrtStack d_st;
   emlrtStack st;
+  emxArray_real_T *b_yr;
   emxArray_real_T *newTraj;
   emxArray_real_T *oldTraj;
   emxArray_real_T *tr;
@@ -600,7 +702,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
 
 #pragma omp parallel \
  num_threads(emlrtAllocRegionTLSs(sp->tls, omp_in_parallel(), omp_get_max_threads(), omp_get_num_procs())) \
- private(pushBundleRectMultiTLSThread,newTraj,oldTraj,tr,yr,withinMargin,ray0,tSpan,tStop,omega_ps,trajIsNew,tPrev,k0,x0,b_emlrtJBEnviron,d_st,i,rayIdx,result,x,sizes_idx_1,exitg1,exitg2,c_this_tunableEnvironment_f2_do,c_this_tunableEnvironment_f2_un,d_this_tunableEnvironment_f2_un,b_result,i2,loop_ub,i1,b_rayBundle,sizes_idx_0) \
+ private(pushBundleRectMultiTLSThread,yr,tr,b_yr,newTraj,oldTraj,withinMargin,ray0,tSpan,tStop,omega_ps,trajIsNew,tPrev,k0,x0,b_emlrtJBEnviron,d_st,i,rayIdx,result,x,sizes_idx_1,exitg1,exitg2,c_this_tunableEnvironment_f2_do,c_this_tunableEnvironment_f2_un,d_this_tunableEnvironment_f2_un,loop_ub,b_result,i2,i1,b_rayBundle,sizes_idx_0) \
  firstprivate(st,b_st,c_st,emlrtHadParallelError)
 
   {
@@ -616,10 +718,11 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
       d_st.prev = &c_st;
       d_st.tls = c_st.tls;
       pushBundleRectMultiTLSThread = emlrtGetThreadStackData();
-      emxInit_real_T(&st, &newTraj, 2, &m_emlrtRTEI, true);
-      emxInit_real_T(&st, &oldTraj, 2, &s_emlrtRTEI, true);
-      emxInit_real_T(&st, &tr, 1, &r_emlrtRTEI, true);
-      emxInit_real_T(&st, &yr, 2, &q_emlrtRTEI, true);
+      emxInit_real_T(&st, &yr, 2, &n_emlrtRTEI, true);
+      emxInit_real_T(&st, &tr, 1, &m_emlrtRTEI, true);
+      emxInit_real_T(&st, &b_yr, 2, &c_emlrtRTEI, true);
+      emxInit_real_T(&st, &newTraj, 2, &p_emlrtRTEI, true);
+      emxInit_real_T(&st, &oldTraj, 2, &t_emlrtRTEI, true);
     } else {
       emlrtHadParallelError = true;
     }
@@ -808,6 +911,15 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
           /*  Provided we have a good integration time we can integrate */
           /*  over the given time span and see what it looks like */
           /*  */
+          i = tr->size[0];
+          tr->size[0] = 1;
+          emxEnsureCapacity_real_T(&st, tr, i, &m_emlrtRTEI);
+          tr->data[0] = 0.0;
+          i = yr->size[0] * yr->size[1];
+          yr->size[0] = 1;
+          yr->size[1] = 1;
+          emxEnsureCapacity_real_T(&st, yr, i, &n_emlrtRTEI);
+          yr->data[0] = 0.0;
           if (tStop > tPrev) {
             withinMargin = false;
             if (rayBundle->type->size[1] == 2) {
@@ -859,44 +971,23 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
                     pushBundleRectMultiTLSThread->f0.this_tunableEnvironment_f2_grid,
                     pushBundleRectMultiTLSThread->f0.b_this_tunableEnvironment_f2_gr,
                     pushBundleRectMultiTLSThread->f0.c_this_tunableEnvironment_f2_gr,
-                    cnstVar, tSpan, ray0, tr, yr);
+                    cnstVar, tSpan, ray0, tr, b_yr);
+              i = yr->size[0] * yr->size[1];
+              yr->size[0] = b_yr->size[0];
+              yr->size[1] = 4;
+              emxEnsureCapacity_real_T(&st, yr, i, &o_emlrtRTEI);
+              loop_ub = b_yr->size[0] * b_yr->size[1];
+              for (i = 0; i < loop_ub; i++) {
+                yr->data[i] = b_yr->data[i];
+              }
 
               /* case 'EPW' */
-              /*   [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ... */
-              /*                                      rayGd),tSpan,ray0);            */
-              break;
-
-             default:
-              /* placeholder */
-              c_this_tunableEnvironment_f2_do[0] = rayGd->domain[0];
-              c_this_tunableEnvironment_f2_do[1] = rayGd->domain[1];
-              c_this_tunableEnvironment_f2_do[2] = rayGd->domain[2];
-              c_this_tunableEnvironment_f2_do[3] = rayGd->domain[3];
-              memcpy(&c_this_tunableEnvironment_f2_un[0], &rayGd->uniqueR[0],
-                     168U * sizeof(real_T));
-              memcpy(&d_this_tunableEnvironment_f2_un[0], &rayGd->uniqueZ[0],
-                     323U * sizeof(real_T));
-              memcpy
-                (&pushBundleRectMultiTLSThread->f0.this_tunableEnvironment_f2_grid
-                 [0], &rayGd->grid[0], 54264U * sizeof(real_T));
-              memcpy
-                (&pushBundleRectMultiTLSThread->f0.b_this_tunableEnvironment_f2_gr
-                 [0], &rayGd->gridR[0], 54264U * sizeof(real_T));
-              memcpy
-                (&pushBundleRectMultiTLSThread->f0.c_this_tunableEnvironment_f2_gr
-                 [0], &rayGd->gridZ[0], 54264U * sizeof(real_T));
-              b_st.site = &d_emlrtRSI;
-              ode45(&b_st, omega_ps, c_this_tunableEnvironment_f2_do,
-                    c_this_tunableEnvironment_f2_un,
-                    d_this_tunableEnvironment_f2_un,
-                    pushBundleRectMultiTLSThread->f0.this_tunableEnvironment_f2_grid,
-                    pushBundleRectMultiTLSThread->f0.b_this_tunableEnvironment_f2_gr,
-                    pushBundleRectMultiTLSThread->f0.c_this_tunableEnvironment_f2_gr,
-                    cnstVar, tSpan, ray0, tr, yr);
+              /* [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ... */
+              /*                                     rayGd,cnstVar),tSpan,ray0); */
               break;
             }
 
-            b_st.site = &e_emlrtRSI;
+            b_st.site = &d_emlrtRSI;
             c_st.site = &hb_emlrtRSI;
             if (tr->size[0] != 0) {
               b_result = tr->size[0];
@@ -904,6 +995,9 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
               b_result = yr->size[0];
             } else {
               b_result = 0;
+              if (yr->size[0] > 0) {
+                b_result = yr->size[0];
+              }
             }
 
             d_st.site = &ib_emlrtRSI;
@@ -927,7 +1021,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
             }
 
             if (withinMargin || (yr->size[0] != 0)) {
-              sizes_idx_1 = 4;
+              sizes_idx_1 = yr->size[1];
             } else {
               sizes_idx_1 = 0;
             }
@@ -935,7 +1029,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
             i = newTraj->size[0] * newTraj->size[1];
             newTraj->size[0] = b_result;
             newTraj->size[1] = i2 + sizes_idx_1;
-            emxEnsureCapacity_real_T(&c_st, newTraj, i, &m_emlrtRTEI);
+            emxEnsureCapacity_real_T(&c_st, newTraj, i, &p_emlrtRTEI);
             loop_ub = i2;
             for (i = 0; i < loop_ub; i++) {
               for (i1 = 0; i1 < b_result; i1++) {
@@ -946,7 +1040,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
             for (i = 0; i < sizes_idx_1; i++) {
               for (i1 = 0; i1 < b_result; i1++) {
                 newTraj->data[i1 + newTraj->size[0] * (i + i2)] = yr->data[i1 +
-                  yr->size[0] * i];
+                  b_result * i];
               }
             }
 
@@ -960,7 +1054,15 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
                 &f_emlrtBCI, &st);
             }
 
+            if (1 > yr->size[1]) {
+              emlrtDynamicBoundsCheckR2012b(1, 1, yr->size[1], &r_emlrtBCI, &st);
+            }
+
             tSpan[0] = yr->data[yr->size[0] - 1];
+            if (2 > yr->size[1]) {
+              emlrtDynamicBoundsCheckR2012b(2, 1, yr->size[1], &r_emlrtBCI, &st);
+            }
+
             tSpan[1] = yr->data[(yr->size[0] + yr->size[0]) - 1];
             withinMargin = inDomain(tSpan, rayGd->domain);
 
@@ -991,7 +1093,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
                 trajs->data[rayIdx].f1->size[1];
               rayBundle->trajs->data[rayIdx].f1->size[0] = newTraj->size[0];
               emxEnsureCapacity_real_T(&st, rayBundle->trajs->data[rayIdx].f1, i,
-                &n_emlrtRTEI);
+                &q_emlrtRTEI);
               if (rayIdx > rayBundle->trajs->size[1] - 1) {
                 emlrtDynamicBoundsCheckR2012b(rayIdx, 0, rayBundle->trajs->size
                   [1] - 1, &k_emlrtBCI, &st);
@@ -1001,7 +1103,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
                 trajs->data[rayIdx].f1->size[1];
               rayBundle->trajs->data[rayIdx].f1->size[1] = newTraj->size[1];
               emxEnsureCapacity_real_T(&st, rayBundle->trajs->data[rayIdx].f1, i,
-                &n_emlrtRTEI);
+                &q_emlrtRTEI);
               b_rayBundle = rayBundle->trajs->size[1] - 1;
               if (rayIdx > rayBundle->trajs->size[1] - 1) {
                 emlrtDynamicBoundsCheckR2012b(rayIdx, 0, rayBundle->trajs->size
@@ -1044,7 +1146,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
               }
 
               /*  drop IC */
-              b_st.site = &f_emlrtRSI;
+              b_st.site = &e_emlrtRSI;
               c_st.site = &hb_emlrtRSI;
               if ((loop_ub != 0) && (rayBundle->trajs->data[rayIdx].f1->size[1]
                                      != 0)) {
@@ -1098,7 +1200,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
               i = oldTraj->size[0] * oldTraj->size[1];
               oldTraj->size[0] = loop_ub;
               oldTraj->size[1] = rayBundle->trajs->data[rayIdx].f1->size[1];
-              emxEnsureCapacity_real_T(&c_st, oldTraj, i, &o_emlrtRTEI);
+              emxEnsureCapacity_real_T(&c_st, oldTraj, i, &r_emlrtRTEI);
               for (i = 0; i <= b_rayBundle; i++) {
                 for (i1 = 0; i1 < loop_ub; i1++) {
                   oldTraj->data[i1 + oldTraj->size[0] * i] = rayBundle->
@@ -1118,7 +1220,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
               rayBundle->trajs->data[rayIdx].f1->size[0] = sizes_idx_1 +
                 sizes_idx_0;
               emxEnsureCapacity_real_T(&c_st, rayBundle->trajs->data[rayIdx].f1,
-                i, &p_emlrtRTEI);
+                i, &s_emlrtRTEI);
               if (rayIdx > b_rayBundle) {
                 emlrtDynamicBoundsCheckR2012b(rayIdx, 0, b_rayBundle,
                   &o_emlrtBCI, &c_st);
@@ -1128,7 +1230,7 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
                 trajs->data[rayIdx].f1->size[1];
               rayBundle->trajs->data[rayIdx].f1->size[1] = b_result;
               emxEnsureCapacity_real_T(&c_st, rayBundle->trajs->data[rayIdx].f1,
-                i, &p_emlrtRTEI);
+                i, &s_emlrtRTEI);
               for (i = 0; i < b_result; i++) {
                 for (i1 = 0; i1 < sizes_idx_1; i1++) {
                   if (rayIdx > b_rayBundle) {
@@ -1171,11 +1273,12 @@ void pushBundleRectMulti(const emlrtStack *sp, struct0_T *rayBundle, const
     }
 
     if (!emlrtHadParallelError) {
-      emlrtHeapReferenceStackLeaveScope(&st, 4);
-      emxFree_real_T(&yr);
-      emxFree_real_T(&tr);
+      emlrtHeapReferenceStackLeaveScope(&st, 5);
       emxFree_real_T(&oldTraj);
       emxFree_real_T(&newTraj);
+      emxFree_real_T(&b_yr);
+      emxFree_real_T(&tr);
+      emxFree_real_T(&yr);
     }
   }
 

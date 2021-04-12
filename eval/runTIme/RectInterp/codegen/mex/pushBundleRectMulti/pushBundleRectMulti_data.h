@@ -27,15 +27,6 @@ extern const volatile char_T *emlrtBreakCheckR2012bFlagVar;
 extern omp_lock_t emlrtLockGlobal;
 extern omp_nest_lock_t emlrtNestLockGlobal;
 extern emlrtContext emlrtContextGlobal;
-extern emlrtBCInfo t_emlrtBCI;
-extern emlrtBCInfo u_emlrtBCI;
-extern emlrtBCInfo v_emlrtBCI;
-extern emlrtBCInfo w_emlrtBCI;
-extern emlrtBCInfo x_emlrtBCI;
-extern emlrtBCInfo y_emlrtBCI;
-extern emlrtBCInfo ab_emlrtBCI;
-extern emlrtBCInfo bb_emlrtBCI;
-extern emlrtRSInfo jb_emlrtRSI;
-extern emlrtRSInfo kb_emlrtRSI;
+extern emlrtRTEInfo c_emlrtRTEI;
 
 /* End of code generation (pushBundleRectMulti_data.h) */

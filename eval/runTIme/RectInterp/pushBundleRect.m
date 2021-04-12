@@ -1,5 +1,5 @@
 
-function bundleOut = pushBundleRect(rayBundle,rayGd,tStep)
+function bundleOut = pushBundle(rayBundle,rayGd,tStep,margin,npts)
 % 
 % First cut at developing a ray integrator for EM and other waves:
 % (JFM May 28, 2020)
@@ -8,24 +8,21 @@ function bundleOut = pushBundleRect(rayBundle,rayGd,tStep)
 %  might help with the problems associated with integrating 
 %  trajectories that could potentially leave the domain, and
 %  where we currently have problems with "margin" (JFM 21 July, 2020).
-
-%rayGd.grid
-%rayGd.uniqueR
-%rayGd.uniqueZ
+%
  
  global cnst
  
- %if ~exist('cnst','var')
- %    cnst = initCnst;              % will put more things in initCnst...
- %end
+ if ~exist('cnst','var')
+     cnst = initCnst;              % will put more things in initCnst...
+ end
 
- %if ~exist('margin','var')
- margin = [150 150 150 150];   % margin around domain in microns
- %end
+ if ~exist('margin','var')
+     margin = [150 150 150 150];   % margin around domain in microns
+ end
 
- %if ~exist('npts','var')
- npts = 2000;                  % points to use in str line check
- %end
+ if ~exist('npts','var')
+     npts = 2000;                  % points to use in str line check
+ end
  
  %
  % Integrate all the rays in the bundle one at a time
@@ -100,13 +97,11 @@ function bundleOut = pushBundleRect(rayBundle,rayGd,tStep)
            case 'EM'
              [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
                                                 rayGd),tSpan,ray0);
-           %case 'EPW'
-           %  [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
-           %                                     rayGd),tSpan,ray0);           
-             otherwise
-             %placeholder
-             [tr,yr] = ode45(@(t,y) odeEmRayFun(t,y,omega_ps, ...
-                                                rayGd),tSpan,ray0);
+           case 'EPW'
+             [tr,yr] = ode45(@(t,y) odeLwRayFun(t,y,omega_ps, ...
+                                                rayGd),tSpan,ray0);           
+           otherwise
+             exit('invalid waveType')
          end
          
          newTraj = [tr,yr];   % because otherwise ode45 will return
@@ -114,7 +109,7 @@ function bundleOut = pushBundleRect(rayBundle,rayGd,tStep)
          % need to check and set halt flags if we are too close to
          % theboundary at the last time
          %
-         withinMargin = inDomain(yr(end,1:2),rayGd);%,margin);
+         withinMargin = inDomain(yr(end,1:2),rayGd,margin);
          if any(~withinMargin)
              rayBundle.halt(rayIdx) = 1;   % set halt flag for
                                            % out-of-margin
@@ -157,9 +152,8 @@ end
      % we assume light - need to fix to be more general
      %    we can use rayBundle.type for this...
      kVac = 1.e-6*abs(omega)/cnst.c;    % 1/um
-     [ind1,ind2] = rectInterp2d(x0,rayGd.uniqueZ,rayGd.uniqueR);
-     logNe = rectInterp2d_v2(x0,rayGd.uniqueZ,rayGd.uniqueR,rayGd.grid,ind1,ind2);
-     localNe = 10.^logNe;%interpOnTraj('valsNe',[x0 x0],rayGd);
+
+     localNe = 10.^interpOnTraj('valsNe',[x0 x0],rayGd);
      nc = rayBundle.nc(rayIdx);         % 1/cm3
      k0Mag = kVac*sqrt(1-localNe/nc);   % local wavenumber in
                                         % 1/um
@@ -170,12 +164,15 @@ end
  end 
  
  
- function inRange = inDomain(x,rayGd)
- % given a column vector of positions x, return a list
+ function inRange = inDomain(x,rayGd,margin)
+ % INDOMAIN - given a column vector of positions x, return a list
  % of logicals showing if they are in the domain (given by rayGd)
  % or not
  %   
-    margin = [0 0 0 0];    % margin in zmin zmaz rmin rmax (um)
+     
+    if ~exist('margin','var')
+        margin = [0 0 0 0];    % margin in zmin zmaz rmin rmax (um)
+    end
     
     rayZ = x(:,1);
     rayR = x(:,2);
@@ -218,8 +215,8 @@ end
       case 'EPW'
         % interpOnTraj wants y0 to be a row vector
         %
-       % localTe = interpOnTraj('valsTe',y0',rayGd);   % eV
-        %speed = (cnst.vTe1eV)*sqrt(localTe);          % estimate using local Te      
+        localTe = interpOnTraj('valsTe',y0',rayGd);   % eV
+        speed = (cnst.vTe1eV)*sqrt(localTe);          % estimate using local Te      
       otherwise
         error('bad wave type in odeStrLine')
     end    
@@ -281,21 +278,19 @@ end
     
     if goodPt
         % interpolation for current position
-        %[ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
-        
-        %triValNe = rayGd.valsNe(rayGd.DT(ti,:));
-        [ind1,ind2] = rectInterp2d(x,rayGd.uniqueZ,rayGd.uniqueR);
-        logNe = rectInterp2d_v2(x,rayGd.uniqueZ,rayGd.uniqueR,rayGd.grid,ind1,ind2);     % log10 of electron density
+        %[ti,bc] = pointLocation(rayGd.DT,x');
+        [weights,inds] = rectLocate(x,rayGd.uniqueZ,rayGd.uniqueR);
+        logNe = triInterp(weights,inds,rayGd.grid);     % log10 of electron density
                                          %    disp(logNe)  % debugging
         netonc = 10^(logNe)/nc;
         
         %triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
-        dLogNedz = rectInterp2d_v2(x,rayGd.uniqueZ,rayGd.uniqueR,rayGd.gridZ,ind1,ind2);   % at phase space point
+        %triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
+        dLogNedz = triInterp(weights,inds,rayGd.gridZ);%dot(bc',triValDLogNedz')';   % at phase space point
                                                 %    disp(dLogNedz)
 
         %triValDLogNedr = rayGd.valsDLogNedr(rayGd.DT(ti,:));
-        dLogNedr = rectInterp2d_v2(x,rayGd.uniqueZ,rayGd.uniqueR,rayGd.gridR,ind1,ind2);%dot(bc',triValDLogNedr')';   % at phase space point
-                                                %    disp(dLogNedr)
+        dLogNedr = triInterp(weights,inds,rayGd.gridR);   % at phase space point
         
         dzdt = sign(omega_ps)*clum*kVec(1)/kVac;
         drdt = sign(omega_ps)*clum*kVec(2)/kVac;    
@@ -316,83 +311,83 @@ end
 end
 
  
-%  function dydt = odeLwRayFun(t,y,omega_ps,rayGd)
-%  % RHS for our ray ode for Langmuir waves
-%  %  output dydt is a column vector:
-%  %  dydt = [dz/dt,dr/dt,dk_z/dt,dk_r/dt]'
-%      
-%  % NOTE: here omega_ps is a scalar (since we deal with a single ray)
-%  
-%     global cnst
-% 
-%     clum  = (cnst.c)*(1.e-6); % speed of light in microns/ps
-%     ln10  = cnst.ln10;
-%     twopi = cnst.twopi;
-% 
-%     omega = omega_ps;   % wave frequency in rads/ps
-% 
-%     x = y(1:2);     % current position at phase space point y
-%     kVec = y(3:4);  % current ray wavevector at phase space point y
-%     k2 = dot(kVec,kVec);
-% 
-%     goodPt = inDomain(x',rayGd);       
-%     %goodPt = 1;    
-%     
-%     if goodPt
-%         % interpolation for current position
-%         [ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
-%         
-%         % density
-%         triValNe = rayGd.valsNe(rayGd.DT(ti,:));
-%         logNe = dot(bc',triValNe')';           % log10 of electron density
-%                                                %    disp(logNe)  % debugging
-%         wpe = (cnst.wpe)*sqrt(10^logNe)*1.e-12; % electron plasma
-%                                                 % frequency (rad/ps)
-%                                                 %    disp(wpe)
-% 
-%         triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
-%         dLogNedz = dot(bc',triValDLogNedz')';   % at phase space point
-%                                                 %    disp(dLogNedz)
-% 
-%         triValDLogNedr = rayGd.valsDLogNedr(rayGd.DT(ti,:));
-%         dLogNedr = dot(bc',triValDLogNedr')';   % at phase space point
-%                                                 %    disp(dLogNedr)
-%         
-%         % derivatives of electron temperature
-%         triValTe = rayGd.valsTe(rayGd.DT(ti,:));
-%         Te = dot(bc',triValTe')';        % electron temperature in eV
-%         vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of electron thermal velocity (um/ps)^2
-%         
-%         triValDLnTedz = rayGd.valsDLnTedz(rayGd.DT(ti,:));
-%         dLnTedz = dot(bc',triValDLnTedz')';   % at phase space point
-%                                               %    disp(dLnTedz)
-% 
-%         triValDLnTedr = rayGd.valsDLnTedr(rayGd.DT(ti,:));
-%         dLnTedr = dot(bc',triValDLnTedr')';   % at phase space point
-%                                               %    disp(dLnTedr)
-%         
-%         dzdt = (3.0*vTe2/omega)*kVec(1);
-%         drdt = (3.0*vTe2/omega)*kVec(2);
-%         
-%         dkzdt = -wpe^2/(2.0*omega)*ln10*dLogNedz - (3/2)*(k2*vTe2/ ...
-%                                                           omega)*dLnTedz;
-%         
-%         dkrdt = -wpe^2/(2.0*omega)*ln10*dLogNedr - (3/2)*(k2*vTe2/ ...
-%                                                           omega)*dLnTedr;
-%         
-%         dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector 
-%     else
-%         Te = 2000.0;                     % dummy electron temperature in eV
-%         vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of elec therm vel (um/ps)
-% 
-%         dzdt = (3.0*vTe2/omega)*kVec(1);
-%         drdt = (3.0*vTe2/omega)*kVec(2);
-%         
-%         dkzdt = 0.0;
-%         dkrdt = 0.0;
-%         
-%         dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector         
-%     end
-%     
-%  end
-% 
+ function dydt = odeLwRayFun(t,y,omega_ps,rayGd)
+ % RHS for our ray ode for Langmuir waves
+ %  output dydt is a column vector:
+ %  dydt = [dz/dt,dr/dt,dk_z/dt,dk_r/dt]'
+     
+ % NOTE: here omega_ps is a scalar (since we deal with a single ray)
+ 
+    global cnst
+
+    clum  = (cnst.c)*(1.e-6); % speed of light in microns/ps
+    ln10  = cnst.ln10;
+    twopi = cnst.twopi;
+
+    omega = omega_ps;   % wave frequency in rads/ps
+
+    x = y(1:2);     % current position at phase space point y
+    kVec = y(3:4);  % current ray wavevector at phase space point y
+    k2 = dot(kVec,kVec);
+
+    goodPt = inDomain(x',rayGd);       
+    %goodPt = 1;    
+    
+    if goodPt
+        % interpolation for current position
+        [ti,bc] = pointLocation(rayGd.DT,x');  % Delauney triangles    
+        
+        % density
+        triValNe = rayGd.valsNe(rayGd.DT(ti,:));
+        logNe = dot(bc',triValNe')';           % log10 of electron density
+                                               %    disp(logNe)  % debugging
+        wpe = (cnst.wpe)*sqrt(10^logNe)*1.e-12; % electron plasma
+                                                % frequency (rad/ps)
+                                                %    disp(wpe)
+
+        triValDLogNedz = rayGd.valsDLogNedz(rayGd.DT(ti,:));
+        dLogNedz = dot(bc',triValDLogNedz')';   % at phase space point
+                                                %    disp(dLogNedz)
+
+        triValDLogNedr = rayGd.valsDLogNedr(rayGd.DT(ti,:));
+        dLogNedr = dot(bc',triValDLogNedr')';   % at phase space point
+                                                %    disp(dLogNedr)
+        
+        % derivatives of electron temperature
+        triValTe = rayGd.valsTe(rayGd.DT(ti,:));
+        Te = dot(bc',triValTe')';        % electron temperature in eV
+        vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of electron thermal velocity (um/ps)^2
+        
+        triValDLnTedz = rayGd.valsDLnTedz(rayGd.DT(ti,:));
+        dLnTedz = dot(bc',triValDLnTedz')';   % at phase space point
+                                              %    disp(dLnTedz)
+
+        triValDLnTedr = rayGd.valsDLnTedr(rayGd.DT(ti,:));
+        dLnTedr = dot(bc',triValDLnTedr')';   % at phase space point
+                                              %    disp(dLnTedr)
+        
+        dzdt = (3.0*vTe2/omega)*kVec(1);
+        drdt = (3.0*vTe2/omega)*kVec(2);
+        
+        dkzdt = -wpe^2/(2.0*omega)*ln10*dLogNedz - (3/2)*(k2*vTe2/ ...
+                                                          omega)*dLnTedz;
+        
+        dkrdt = -wpe^2/(2.0*omega)*ln10*dLogNedr - (3/2)*(k2*vTe2/ ...
+                                                          omega)*dLnTedr;
+        
+        dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector 
+    else
+        Te = 2000.0;                     % dummy electron temperature in eV
+        vTe2 =(cnst.vTe1eV*sqrt(Te))^2;  % square of elec therm vel (um/ps)
+
+        dzdt = (3.0*vTe2/omega)*kVec(1);
+        drdt = (3.0*vTe2/omega)*kVec(2);
+        
+        dkzdt = 0.0;
+        dkrdt = 0.0;
+        
+        dydt = [dzdt,drdt,dkzdt,dkrdt]'; % column vector         
+    end
+    
+ end
+

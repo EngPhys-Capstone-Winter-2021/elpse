@@ -18,7 +18,7 @@
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
-static emlrtRTEInfo y_emlrtRTEI = { 1, /* lineNo */
+static emlrtRTEInfo ab_emlrtRTEI = { 1,/* lineNo */
   1,                                   /* colNo */
   "_coder_pushBundleRectMulti_api",    /* fName */
   ""                                   /* pName */
@@ -788,9 +788,9 @@ void pushBundleRectMulti_api(pushBundleRectMultiStackData *SD, const mxArray *
   real_T tStep;
   st.tls = emlrtRootTLSGlobal;
   emlrtHeapReferenceStackEnterFcnR2012b(&st);
-  emxInitStruct_struct0_T(&st, &rayBundle, &y_emlrtRTEI, true);
-  emxInitStruct_struct1_T(&st, &SD->f0.rayGd, &y_emlrtRTEI, true);
-  emxInitStruct_struct0_T(&st, &bundleOut, &y_emlrtRTEI, true);
+  emxInitStruct_struct0_T(&st, &rayBundle, &ab_emlrtRTEI, true);
+  emxInitStruct_struct1_T(&st, &SD->f0.rayGd, &ab_emlrtRTEI, true);
+  emxInitStruct_struct0_T(&st, &bundleOut, &ab_emlrtRTEI, true);
 
   /* Marshall function inputs */
   c_emlrt_marshallIn(&st, emlrtAliasP(prhs[0]), "rayBundle", &rayBundle);

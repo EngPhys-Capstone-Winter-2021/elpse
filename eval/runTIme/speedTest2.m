@@ -1,4 +1,4 @@
-nArray = 100:100:1000;
+nArray = 100;%:100:1000;
 path(path,'../../Source')
 path(path,'RectInterp')
 global cnst
