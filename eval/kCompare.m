@@ -1,5 +1,5 @@
 function kDiff = kCompare(bundle,rayGd,mode)
-    
+    %compute the wave vector differences 
     global cnst
     cnst = initCnst;
     

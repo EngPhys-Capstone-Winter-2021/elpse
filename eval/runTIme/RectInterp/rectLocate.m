@@ -1,4 +1,8 @@
 function [weights,inds] = rectLocate(qp,dim1_val,dim2_val)
+    %determines the two indices of a rectangular grid that define the
+    %rectangle enclosing the queried point and the weighting assigned to
+    %the four points of the rectangle 
+    
     ind1 = closest_val(dim1_val,qp(1));
     ind2 = closest_val(dim2_val,qp(2));
     
@@ -16,20 +20,16 @@ function [weights,inds] = rectLocate(qp,dim1_val,dim2_val)
     diagSlope = (coordB(2)-coordC(2))/(coordB(1)-coordC(1));
     qpSlope = vecC(2)/vecC(1);
     areaTri = (coordD(1)-coordC(1))*(coordA(2)-coordC(2))/2;
-    %dataP = [coordA;coordB;coordC;coordD];
-    % plot(dataP(:,1),dataP(:,2),qp(1),qp(2),"*")
+
      
-   if qpSlope > diagSlope
+   if qpSlope > diagSlope %triangle above diagonal
         weights = baryCent(qp,coordA,coordB,coordC);
         areaA = weights(1);%polyarea([qp(1),coordB(1),coordC(1)],[qp(2),coordB(2),coordC(2)]);%abs(vecB(1)*vecC(2)-vecB(2)*vecC(1))/2;
         areaB = weights(2);%polyarea([qp(1),coordA(1),coordC(1)],[qp(2),coordA(2),coordC(2)]);%abs(vecA(1)*vecC(2)-vecA(2)*vecC(1))/2;
         areaC = weights(3);%polyarea([qp(1),coordA(1),coordB(1)],[qp(2),coordA(2),coordB(2)]);%abs(vecA(1)*vecB(2)-vecA(2)*vecB(1))/2;
         areaD = 0;
         
-   else
-        %plot([qp(1),coordC(1),coordD(1),qp(1)],[qp(2),coordC(2),coordD(2),qp(2)])
-       % plot([qp(1),coordB(1),coordD(1),qp(1)],[qp(2),coordB(2),coordD(2),qp(2)])
-        %plot([qp(1),coordB(1),coordC(1),qp(1)],[qp(2),coordB(2),coordC(2),qp(2)])
+   else %triangle below diagonal
         weights = baryCent(qp,coordB,coordC,coordD);
         areaA = 0;
         areaB = weights(1);%polyarea([qp(1),coordC(1),coordD(1)],[qp(2),coordC(2),coordD(2)]);%abs(vecC(1)*vecD(2)-vecC(2)*vecD(1))/2;
@@ -43,23 +43,27 @@ end
 
 
 function vals = baryCent(p,a,b,c)
+    %algorithm that can determine the barycentric weights of point p 
+    %based on a triangle defined by points a,b,c
     v0 = b - a;
     v1 = c - a;
     v2 = p' - a;
+    %total triangle area
     den = v0(1) * v1(2) - v1(1) * v0(2);
+    %individual area of subtriangles
     v = (v2(1) * v1(2) - v1(1) * v2(2)) / den;
     w = (v0(1) * v2(2) - v2(1) * v0(2)) / den;
+    %final coordinate calculated by subtraction as u + v + w = 1
     u = 1.0 - v - w;
     vals = [v,w,u];
 end
 
 function ind = closest_val(A, val)
-    %if ~exist('floorInd','var')
+    %determines the lowest indice in an ordered list satisfying:
+    %val < A(ind)
     floorInd = 1;
-    %end
-    %if ~exist('ceilInd','var')
     ceilInd = length(A);
-    %end
+
     while ceilInd - floorInd > 1
         med = floor((floorInd + ceilInd)/2);
         if A(med) >= val 

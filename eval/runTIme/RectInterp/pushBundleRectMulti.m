@@ -1,20 +1,14 @@
 
 function bundleOut = pushBundleRectMulti(rayBundle,rayGd,tStep,cnst)
-% 
+%Edited by Janukan Sivajeyan and James Wang (April 2020) 
+%Incorporating the work of Adil Attar, Ryan Fang, Janukan Sivajeyan, and James Wang
+%   
 % First cut at developing a ray integrator for EM and other waves:
 % (JFM May 28, 2020)
 %
-% Perhaps trajIsNew should be replaced with pushFromBoundary? This
-%  might help with the problems associated with integrating 
-%  trajectories that could potentially leave the domain, and
-%  where we currently have problems with "margin" (JFM 21 July, 2020).
 
-%rayGd.grid
-%rayGd.uniqueR
-%rayGd.uniqueZ
- %path(path,'../../../Source')
- %cnst = initC;
- 
+
+ %some of the following code had to be removed
  %if ~exist('cnst','var')
  %    cnst = initCnst;              % will put more things in initCnst...
  %end

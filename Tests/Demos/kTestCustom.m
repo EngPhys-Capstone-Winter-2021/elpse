@@ -17,7 +17,7 @@ launchList.mode = 'forward';        % Could be backward also (neg omega?).
 launchList.nrays = nArray;
 launchList.frequency = cnst.omega0; % 1/sec
 % center of spherical target
-launchList.focalPt = [-400,0];      % microns
+launchList.focalPt = [-40,0];      % microns
 launchList.spot = struct('type','SG8','diameter',90); 
 angle = 180+(-23.3); % (degres) is measured from "target norm"
 launchList.centroid = [cosd(angle),sind(angle)]; % unit vector in
@@ -46,4 +46,5 @@ mode = [0];
 
 figure(1)
 plotTrajs(rb.trajs);
+save("CustomTraj.mat","rb")
 %plotSpeeds(nArray,data,["Orig","Rect","Geometric Interp","Dopri 45"])

@@ -1,0 +1,42 @@
+
+function bundleOut = pushBundleAlt(rayBundle,rayGd,tStep,margin,npts)
+% 
+% First cut at developing a ray integrator for EM and other waves:
+% (JFM May 28, 2020)
+%
+% Perhaps trajIsNew should be replaced with pushFromBoundary? This
+%  might help with the problems associated with integrating 
+%  trajectories that could potentially leave the domain, and
+%  where we currently have problems with "margin" (JFM 21 July, 2020).
+%
+ 
+ global cnst
+ 
+ if ~exist('cnst','var')
+     cnst = initCnst;              % will put more things in initCnst...
+ end
+
+ if ~exist('margin','var')
+     margin = [150 150 150 150];   % margin around domain in microns
+ end
+
+ if ~exist('npts','var')
+     npts = 2000;                  % points to use in str line check
+ end
+ 
+ if ~isfield(rayBundle,"rayICs")
+     rayIC = zeros()
+     for rayInd = 1:rayBundle.nrays
+         
+     end
+ end
+ %
+ % Integrate all the rays in the bundle one at a time
+ %
+ 
+
+ bundleOut = propAlg(rayBundle,rayGd,tStep,margin,npts,initCnst);
+end 
+
+
+ 

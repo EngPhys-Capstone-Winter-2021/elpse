@@ -1,5 +1,5 @@
 nArray = 100;%
-tRun = 15;
+tRun = 5;
 
 path(path,'../../Source')
 path(path,'../../eval/runTIme')

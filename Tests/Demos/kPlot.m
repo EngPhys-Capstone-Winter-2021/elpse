@@ -1,4 +1,5 @@
 function kPlot(data,algSet)
+    %plot wavevector difference data
     dlength = length(data);
     maxVal = zeros([1,dlength]);
     minVal = zeros([1,dlength]);

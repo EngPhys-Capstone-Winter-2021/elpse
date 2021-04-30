@@ -1,4 +1,6 @@
 function times = speedTestMult(dataFile,tPush,nArray,func1)
+    %run a ray trajectory calculation and record its time
+    %for code that is compiled and multiple core
     load(dataFile,"rayGd")
     rayGd = rmfield(rayGd,"DT"); 
     times = zeros([length(nArray),1]);

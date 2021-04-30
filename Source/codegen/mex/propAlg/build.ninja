@@ -1,0 +1,58 @@
+# CompilerName=gcc
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root/build/glnxa64
+matlabdir = /usr/local/MATLAB/R2020b
+startdir = /home/janukan/CapstoneWinter/elpse/Source
+
+# Toolchain information
+cc = /usr/bin/gcc
+cxx = g++
+linker = /usr/bin/gcc
+linkerxx = g++
+
+cflags =  -fexceptions -fPIC -fno-omit-frame-pointer -pthread -D_GNU_SOURCE -DMATLAB_MEX_FILE  -O2 -fwrapv -DNDEBUG -std=c99 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=propAlg_mex -c 
+
+cxxflags =  -fexceptions -fPIC -fno-omit-frame-pointer -pthread -std=c++11 -D_GNU_SOURCE -DMATLAB_MEX_FILE  -O2 -fwrapv -DNDEBUG -std=c++11 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=propAlg_mex -c 
+
+ldflags =  -pthread -Wl,--no-undefined -Wl,-rpath-link,$matlabdir/bin/glnxa64 -shared  -L"$matlabdir/bin/glnxa64" -lmx -lmex -lmat -lm -lstdc++  -o propAlg_mex.mexa64 -L"$matlabdir/bin/glnxa64" -lmwblas -lemlrt -lcovrt -lut -lmwmathutil  -Wl,--version-script,propAlg_mex.map
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -o $out
+
+rule cxx
+    command = $cxx $cxxflags $in -o $out
+
+rule link
+    command = $linker $in $ldflags
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir/propAlg_data.o : cc $root/propAlg_data.c
+build $builddir/rt_nonfinite.o : cc $root/rt_nonfinite.c
+build $builddir/propAlg_initialize.o : cc $root/propAlg_initialize.c
+build $builddir/propAlg_terminate.o : cc $root/propAlg_terminate.c
+build $builddir/string1.o : cc $root/string1.c
+build $builddir/ifWhileCond.o : cc $root/ifWhileCond.c
+build $builddir/propAlg.o : cc $root/propAlg.c
+build $builddir/error.o : cc $root/error.c
+build $builddir/strcmp.o : cc $root/strcmp.c
+build $builddir/ode45.o : cc $root/ode45.c
+build $builddir/rectLocate.o : cc $root/rectLocate.c
+build $builddir/eps.o : cc $root/eps.c
+build $builddir/num2str.o : cc $root/num2str.c
+build $builddir/warning.o : cc $root/warning.c
+build $builddir/_coder_propAlg_api.o : cc $root/interface/_coder_propAlg_api.c
+build $builddir/_coder_propAlg_mex.o : cc $root/interface/_coder_propAlg_mex.c
+build $builddir/propAlg_emxutil.o : cc $root/propAlg_emxutil.c
+build $builddir/_coder_propAlg_info.o : cc $root/interface/_coder_propAlg_info.c
+build $builddir/c_mexapi_version.o : cc $matlabdir/extern/version/c_mexapi_version.c
+
+# Link
+build $root/propAlg_mex.mexa64 : link $builddir/propAlg_data.o $builddir/rt_nonfinite.o $builddir/propAlg_initialize.o $builddir/propAlg_terminate.o $builddir/string1.o $builddir/ifWhileCond.o $builddir/propAlg.o $builddir/error.o $builddir/strcmp.o $builddir/ode45.o $builddir/rectLocate.o $builddir/eps.o $builddir/num2str.o $builddir/warning.o $builddir/_coder_propAlg_api.o $builddir/_coder_propAlg_mex.o $builddir/propAlg_emxutil.o $builddir/_coder_propAlg_info.o $builddir/c_mexapi_version.o 
